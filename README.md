@@ -12,13 +12,13 @@
 ## 📖 Documentation
 
 ### New User?
-→ Read **`QUICK_START.md`** for a 60-second introduction
+→ Read **`doc/QUICK_START.md`** for a 60-second introduction
 
 ### Want Full Details?
-→ Read **`GAME_README.md`** for complete documentation
+→ Read **`doc/GAME_README.md`** for complete documentation
 
 ### Developer/Curious?
-→ Read **`PROJECT_SUMMARY.md`** for technical insights
+→ Read **`doc/PROJECT_SUMMARY.md`** for technical insights
 
 ---
 
@@ -35,9 +35,9 @@
 ### Documentation
 | File | Purpose | Read Time |
 |------|---------|-----------|
-| `QUICK_START.md` | Fast introduction | 3 min |
-| `GAME_README.md` | Complete guide | 15 min |
-| `PROJECT_SUMMARY.md` | Technical overview | 10 min |
+| `doc/QUICK_START.md` | Fast introduction | 3 min |
+| `doc/GAME_README.md` | Complete guide | 15 min |
+| `doc/PROJECT_SUMMARY.md` | Technical overview | 10 min |
 | `README.md` | This navigation file | 2 min |
 
 ---
@@ -154,6 +154,7 @@ Players will learn:
 - Enable JavaScript
 - Use modern browser (Chrome, Firefox, Edge, Safari)
 - Check browser console for errors
+- If Pyodide fails under `file://`, serve the folder with a local HTTP server and open `http://localhost:8000/web_os.html`
 
 ### Folder won't unlock?
 - Type `STELLAR` in ALL CAPS
