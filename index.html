@@ -219,6 +219,8 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.23.4/ace.js" integrity="sha512-wXPWBwPVLckUOjwaJQNhXRzqPrYEL7YUox7P3+OK2VV4oG0RXnA3XjT4GgWmkIlYp54ByS1xdGVAEkut1YGZIA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/phaser@3.80.1/dist/phaser.min.js"></script>
+<script src="game_engine.js"></script>
 <script src="game_logic.js"></script>
 <script>
 (function() {
@@ -2082,124 +2084,10 @@ print(decode_message())`
   };
 
   // Game
-  const gameCanvas = document.getElementById("game-canvas");
-  const gameCtx = gameCanvas.getContext("2d");
-  const gameOverlay = document.getElementById("game-overlay");
-  const gameStart = document.getElementById("game-start");
-  let gameRunning = false;
-  let gameScore = 0;
-  let gameSpeed = 3;
-  let player = null;
-  let meteors = [];
-
   const initializeGame = () => {
-    resetGame();
-    renderGame();
-    window.addEventListener("keydown", (e) => {
-      if (!gameRunning) return;
-      if (e.key === "ArrowLeft") player.targetX -= 60;
-      if (e.key === "ArrowRight") player.targetX += 60;
-      if (e.key === " ") {
-        player.size = 26;
-        setTimeout(() => (player.size = 18), 180);
-      }
-    });
-
-    gameStart.addEventListener("click", () => {
-      gameOverlay.style.display = "none";
-      gameRunning = true;
-      gameScore = 0;
-      gameSpeed = 3;
-      player.x = gameCanvas.width / 2;
-      player.targetX = player.x;
-      meteors = [];
-      loopGame();
-    });
-  };
-
-  const resetGame = () => {
-    player = { x: gameCanvas.width / 2, y: gameCanvas.height - 60, size: 18, targetX: gameCanvas.width / 2 };
-    meteors = [];
-  };
-
-  const spawnMeteor = () => {
-    meteors.push({ x: Math.random() * gameCanvas.width, y: -20, size: 16 + Math.random() * 28, speed: gameSpeed + Math.random() * 2 });
-  };
-
-  const loopGame = () => {
-    if (!gameRunning) return;
-    updateGame();
-    renderGame();
-    requestAnimationFrame(loopGame);
-  };
-
-  let lastSpawn = 0;
-  const updateGame = () => {
-    player.x += (player.targetX - player.x) * 0.12;
-    player.x = Math.max(20, Math.min(gameCanvas.width - 20, player.x));
-
-    const now = Date.now();
-    if (now - lastSpawn > 600) {
-      spawnMeteor();
-      lastSpawn = now;
+    if (window.StellarRunner && typeof window.StellarRunner.init === "function") {
+      window.StellarRunner.init();
     }
-
-    meteors.forEach((m) => {
-      m.y += m.speed;
-      if (m.y > gameCanvas.height + 40) {
-        meteors.splice(meteors.indexOf(m), 1);
-        gameScore += 10;
-        if (gameScore % 120 === 0) {
-          gameSpeed += 0.5;
-        }
-      }
-      const dx = m.x - player.x;
-      const dy = m.y - player.y;
-      const distance = Math.sqrt(dx * dx + dy * dy);
-      if (distance < m.size + player.size - 4) {
-        gameRunning = false;
-        gameOverlay.innerHTML = `<h2>Crashed!</h2><p>Score: ${gameScore}</p><button id="game-restart" style="margin-top:12px; padding:8px 18px; border-radius:10px; border:none; background:rgba(51,161,255,0.6); color:#fff; cursor:pointer;">Try Again</button>`;
-        gameOverlay.style.display = "block";
-        document.getElementById("game-restart").addEventListener("click", () => {
-          gameOverlay.style.display = "none";
-          resetGame();
-          renderGame();
-          gameScore = 0;
-          gameSpeed = 3;
-          gameRunning = true;
-          loopGame();
-        });
-      }
-    });
-  };
-
-  const renderGame = () => {
-    gameCtx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
-    const gradient = gameCtx.createLinearGradient(0, 0, 0, gameCanvas.height);
-    gradient.addColorStop(0, "rgba(10, 20, 60, 0.9)");
-    gradient.addColorStop(1, "rgba(2, 6, 15, 0.95)");
-    gameCtx.fillStyle = gradient;
-    gameCtx.fillRect(0, 0, gameCanvas.width, gameCanvas.height);
-
-    meteors.forEach((m) => {
-      gameCtx.beginPath();
-      gameCtx.fillStyle = "#ff9f43";
-      gameCtx.arc(m.x, m.y, m.size, 0, Math.PI * 2);
-      gameCtx.fill();
-      gameCtx.fillStyle = "#ffd166";
-      gameCtx.beginPath();
-      gameCtx.arc(m.x - 4, m.y - 4, m.size * 0.6, 0, Math.PI * 2);
-      gameCtx.fill();
-    });
-
-    gameCtx.beginPath();
-    gameCtx.fillStyle = "#64d8ff";
-    gameCtx.arc(player.x, player.y, player.size, 0, Math.PI * 2);
-    gameCtx.fill();
-
-    gameCtx.fillStyle = "#ffffff";
-    gameCtx.font = "16px Roboto";
-    gameCtx.fillText(`Score: ${gameScore}`, 18, 28);
   };
 
   // System Stats
