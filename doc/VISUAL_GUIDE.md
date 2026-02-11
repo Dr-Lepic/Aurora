@@ -437,4 +437,5 @@ Actions
 
 This visual guide helps you understand what to expect when playing Aurora Mystery!
 
-**Open `web_os.html` to see it all in action!** 🎮✨
+**Open `index.html` to see it all in action!** 🎮✨
+

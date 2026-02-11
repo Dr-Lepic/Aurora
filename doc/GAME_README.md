@@ -120,7 +120,7 @@ Result: **STELLAR**
 
 ### Architecture
 ```
-web_os.html          - Main WebOS interface and apps
+index.html          - Main WebOS interface and apps
 game_logic.js        - Puzzle game engine
 mystery_styles.css   - Game UI styling
 aurora.css          - Base OS styling
@@ -333,3 +333,4 @@ All clues are discoverable through normal system exploration. If stuck:
 4. Remember: The number 7 is key!
 
 **Good luck, Agent! 🕵️‍♀️🕵️‍♂️**
+

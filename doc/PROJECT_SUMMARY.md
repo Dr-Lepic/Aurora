@@ -11,7 +11,7 @@ I've transformed your Aurora WebOS into a fully immersive **escape room puzzle g
 ```
 h:\Projects\Test\
 │
-├── web_os.html              # Main WebOS + game integration
+├── index.html              # Main WebOS + game integration
 ├── aurora.css               # Base OS styling
 ├── mystery_styles.css       # Game UI styles (NEW)
 ├── game_logic.js           # Complete puzzle game engine (NEW)
@@ -78,7 +78,7 @@ AuroraMystery.resetGame()         // Start over
 - 📱 Responsive design for mobile
 - ✨ Smooth transitions throughout
 
-### web_os.html Updates
+### index.html Updates
 **Integrations:**
 - Linked mystery_styles.css and game_logic.js
 - Exposed core functions to global scope
@@ -400,7 +400,7 @@ Even after solving, players can:
 ## 🎮 How to Experience It
 
 ### First Playthrough (Recommended)
-1. Open `web_os.html`
+1. Open `index.html`
 2. Read `MISSION_BRIEFING.txt`
 3. Explore naturally
 4. Use hints if needed
@@ -458,7 +458,7 @@ You asked me to:
 
 ## 🚀 Ready to Play!
 
-Everything is integrated and ready. Just open `web_os.html` in your browser and start your mission as an intelligence agent!
+Everything is integrated and ready. Just open `index.html` in your browser and start your mission as an intelligence agent!
 
 **The CLASSIFIED folder awaits. Can you crack the code?** 🕵️🔐
 
@@ -466,3 +466,4 @@ Everything is integrated and ready. Just open `web_os.html` in your browser and 
 
 *Built with creativity, attention to detail, and a passion for engaging game design.*
 *- Your AI Assistant*
+

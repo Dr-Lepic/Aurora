@@ -3,7 +3,7 @@
 ## 🚀 START HERE
 
 **To play the game immediately:**
-1. Open `web_os.html` in your browser
+1. Open `index.html` in your browser
 2. Read the on-screen instructions
 3. Have fun! 🎮
 
@@ -27,7 +27,7 @@
 ### Core Game Files
 | File | Purpose | Lines |
 |------|---------|-------|
-| `web_os.html` | Main application + OS integration | 1,200+ |
+| `index.html` | Main application + OS integration | 1,200+ |
 | `game_logic.js` | Complete puzzle game engine | 520 |
 | `mystery_styles.css` | Game UI styling & animations | 800+ |
 | `aurora.css` | Base WebOS styles | 600+ |
@@ -154,7 +154,7 @@ Players will learn:
 - Enable JavaScript
 - Use modern browser (Chrome, Firefox, Edge, Safari)
 - Check browser console for errors
-- If Pyodide fails under `file://`, serve the folder with a local HTTP server and open `http://localhost:8000/web_os.html`
+- If Pyodide fails under `file://`, serve the folder with a local HTTP server and open `http://localhost:8000/index.html`
 
 ### Folder won't unlock?
 - Type `STELLAR` in ALL CAPS
@@ -250,7 +250,7 @@ This isn't just a game—it's an **educational experience** wrapped in an **enga
 
 **Ready to become an elite intelligence agent?**
 
-### 🚀 Open `web_os.html` and start your mission!
+### 🚀 Open `index.html` and start your mission!
 
 ---
 
@@ -276,3 +276,4 @@ If you enjoy the game:
 **Good luck, Agent!** 🕵️‍♀️🔐🎮
 
 *The CLASSIFIED folder awaits your genius.*
+

@@ -2,7 +2,7 @@
 
 ## ⚡ TL;DR - Get Playing in 60 Seconds
 
-1. **Open `web_os.html`** in your browser
+1. **Open `index.html`** in your browser
 2. **Wait for boot sequence** (5 seconds)
 3. **Read `MISSION_BRIEFING.txt`** on the desktop
 4. **Double-click the 🔒 CLASSIFIED folder** to see the password prompt
@@ -219,3 +219,4 @@ Aurora Mystery combines the excitement of an escape room with the educational va
 ---
 
 *P.S. - If you solve it, try teaching a friend how ciphers work using this game!*
+

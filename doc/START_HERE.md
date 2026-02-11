@@ -3,7 +3,7 @@
 ## 🚀 Quick Test Guide
 
 ### ✅ **Step 1: Open the Game**
-1. Open `web_os.html` in your browser (Chrome/Firefox/Edge recommended)
+1. Open `index.html` in your browser (Chrome/Firefox/Edge recommended)
 2. Wait 5 seconds for boot sequence
 3. You should see the desktop with:
    - ✅ Several app icons (Files, Code, Terminal, etc.)
@@ -108,7 +108,7 @@ If you want to find all clues:
 **Fix:** 
 - Press Ctrl+F5 to hard refresh
 - Check browser console (F12) for errors
-- Make sure you're opening `web_os.html` directly
+- Make sure you're opening `index.html` directly
 
 ### Issue: Locked folder doesn't appear
 **Fix:**
@@ -188,7 +188,7 @@ Go through this list to verify everything works:
 ## 🚀 Quick Start (30 Seconds)
 
 ### Just Want to Play?
-1. **Open `web_os.html`** in your browser (Chrome, Firefox, Edge, or Safari)
+1. **Open `index.html`** in your browser (Chrome, Firefox, Edge, or Safari)
 2. Wait 5 seconds for boot
 3. **Read `MISSION_BRIEFING.txt`** on the desktop
 4. **Double-click the 🔒 CLASSIFIED folder**
@@ -272,7 +272,7 @@ Go through this list to verify everything works:
 
 If you just want to see it work:
 
-1. Open `web_os.html`
+1. Open `index.html`
 2. Open Terminal (>_ icon)
 3. Type: `status`
 4. Click 📖 button (Clue Journal)
@@ -331,7 +331,7 @@ If you just want to see it work:
 ### Files Created (10 total)
 ```
 Core Game:
-  web_os.html          - Main app
+  index.html          - Main app
   game_logic.js        - Game engine  
   mystery_styles.css   - Game UI
   aurora.css          - OS styling
@@ -369,7 +369,7 @@ Use it, share it, customize it!
 
 ## 🚀 Ready?
 
-### Open `web_os.html` and become an elite intelligence agent!
+### Open `index.html` and become an elite intelligence agent!
 
 The CLASSIFIED folder awaits your genius. 🔐
 
@@ -392,3 +392,4 @@ Good luck, Agent! 🕵️‍♀️
 
 *Created with ❤️ by your AI assistant*
 *Version 1.0 - Fully Complete*
+

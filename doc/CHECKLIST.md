@@ -61,7 +61,7 @@
 ### 💻 Technical Implementation
 - [x] game_logic.js (~520 lines)
 - [x] mystery_styles.css (~800 lines)
-- [x] Integration with web_os.html
+- [x] Integration with index.html
 - [x] Global scope exposure
 - [x] Event detection system
 - [x] localStorage persistence
@@ -117,7 +117,7 @@
 
 ### Files Required
 ```
-✅ web_os.html              (Main file)
+✅ index.html              (Main file)
 ✅ aurora.css               (Base styles)
 ✅ mystery_styles.css       (Game styles)
 ✅ game_logic.js           (Game engine)
@@ -381,7 +381,7 @@
 - [x] ✅ Performance optimized
 
 ### How to Launch
-1. Open `web_os.html` in browser
+1. Open `index.html` in browser
 2. Wait for boot (5 seconds)
 3. Start playing!
 
@@ -422,7 +422,7 @@
 
 **The Aurora Mystery is complete and ready for agents to solve!**
 
-Open `web_os.html` and start your mission! 🕵️‍♀️🔐✨
+Open `index.html` and start your mission! 🕵️‍♀️🔐✨
 
 ---
 
@@ -431,3 +431,4 @@ Open `web_os.html` and start your mission! 🕵️‍♀️🔐✨
 *Game status: READY TO PLAY 🎮*
 *Documentation: COMPREHENSIVE 📚*
 *Quality: EXCEPTIONAL ⭐*
+
