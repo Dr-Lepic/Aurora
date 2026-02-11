@@ -1,0 +1,2337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Aurora WebOS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
+<link rel="stylesheet" href="aurora.css">
+<link rel="stylesheet" href="mystery_styles.css">
+</head>
+<body class="loading">
+<div id="boot-screen">
+  <div id="boot-logo">A U R O R A</div>
+  <div id="boot-progress"><div class="boot-bar"></div></div>
+  <div id="boot-tip">Initializing immersive desktop experience...</div>
+</div>
+
+<div id="desktop">
+  <div id="background-stars"><canvas id="starfield"></canvas></div>
+  <div id="desktop-icons"></div>
+
+  <div id="start-menu">
+    <h2>Aurora Suite</h2>
+    <div class="app-grid" id="start-menu-grid"></div>
+  </div>
+
+  <div id="system-overview" class="glass-card">
+    <h3>System Pulse</h3>
+    <div class="stat">Virtual Memory Usage
+      <div class="meter"><span id="mem-meter"></span></div>
+    </div>
+    <div class="stat">Processor Activity
+      <div class="meter"><span id="cpu-meter"></span></div>
+    </div>
+    <div class="stat">Disk Throughput
+      <div class="meter"><span id="disk-meter"></span></div>
+    </div>
+    <div class="stat">Session Insights
+      <ul style="margin: 6px 0 0 18px; padding: 0;">
+        <li id="stat-files">Files loaded: 0</li>
+        <li id="stat-snippets">Snippets executed: 0</li>
+        <li id="stat-strokes">Paint strokes: 0</li>
+      </ul>
+    </div>
+  </div>
+
+  <div id="notification-center">
+    <div class="notification">
+      <strong>Welcome to Aurora WebOS</strong>
+      <p>Your creative control center is online. Explore the Start menu or desktop icons to begin.</p>
+    </div>
+    <div class="notification">
+      <strong>Tip</strong>
+      <p>Use the File Manager to populate virtual storage, then open items directly in TextPad or Aurora Code.</p>
+    </div>
+  </div>
+
+  <div id="taskbar">
+    <div id="start-button">◈</div>
+    <div id="taskbar-apps"></div>
+    <div id="system-tray">
+      <div id="tray-notifications" style="cursor:pointer;">🔔</div>
+      <div id="clock">00:00</div>
+    </div>
+  </div>
+</div>
+
+<!-- Text Editor Window -->
+<div class="window" id="text-editor-window" data-app="textpad">
+  <div class="window-header">
+    <span class="window-title">Nebula TextPad</span>
+    <div class="window-controls">
+      <button data-action="minimize"></button>
+      <button data-action="focus"></button>
+      <button data-action="close"></button>
+    </div>
+  </div>
+  <div class="window-body">
+    <div id="text-editor-toolbar">
+      <button id="text-new">New</button>
+      <button id="text-open">Open</button>
+      <button id="text-save">Save</button>
+      <button id="text-download">Export</button>
+      <span id="text-editor-status">Untitled</span>
+    </div>
+    <textarea id="text-editor" spellcheck="false" placeholder="Type your thoughts into the void..."></textarea>
+  </div>
+  <div class="window-footer">Nebula TextPad · Live autosave to virtual storage</div>
+  <div class="window-resizer"></div>
+</div>
+
+<!-- Terminal Window -->
+<div class="window" id="terminal-window" data-app="terminal">
+  <div class="window-header">
+    <span class="window-title">Celestia Terminal</span>
+    <div class="window-controls">
+      <button data-action="minimize"></button>
+      <button data-action="focus"></button>
+      <button data-action="close"></button>
+    </div>
+  </div>
+  <div class="window-body">
+    <div id="terminal-output"></div>
+    <textarea id="terminal-input" rows="2" placeholder=">>> Awaiting your Python incantations..."></textarea>
+  </div>
+  <div class="window-footer" id="terminal-status">Loading Python runtime...</div>
+  <div class="window-resizer"></div>
+</div>
+
+<!-- Code Editor Window -->
+<div class="window" id="code-editor-window" data-app="code">
+  <div class="window-header">
+    <span class="window-title">Aurora Code Studio</span>
+    <div class="window-controls">
+      <button data-action="minimize"></button>
+      <button data-action="focus"></button>
+      <button data-action="close"></button>
+    </div>
+  </div>
+  <div class="window-body">
+    <div id="code-editor-toolbar">
+      <button id="code-new">New</button>
+      <button id="code-open">Open</button>
+      <button id="code-save">Save</button>
+      <button id="code-run">Run</button>
+      <select id="code-language">
+        <option value="javascript">JavaScript</option>
+        <option value="python">Python</option>
+        <option value="html">HTML</option>
+        <option value="css">CSS</option>
+      </select>
+      <span id="code-status" style="margin-left:auto; opacity:0.7;">Untitled</span>
+    </div>
+    <div id="code-editor"></div>
+  </div>
+  <div class="window-footer">Aurora Code Studio · Live syntax highlighting powered by Ace</div>
+  <div class="window-resizer"></div>
+</div>
+
+<!-- File Manager Window -->
+<div class="window" id="file-manager-window" data-app="files">
+  <div class="window-header">
+    <span class="window-title">Nova File Explorer</span>
+    <div class="window-controls">
+      <button data-action="minimize"></button>
+      <button data-action="focus"></button>
+      <button data-action="close"></button>
+    </div>
+  </div>
+  <div class="window-body">
+    <div id="file-manager">
+      <div id="file-tree"></div>
+      <div id="file-manager-panel">
+        <div id="file-manager-toolbar">
+          <button id="create-file">New File</button>
+          <button id="create-folder">New Folder</button>
+          <button id="rename-item">Rename</button>
+          <button id="delete-item">Delete</button>
+          <button id="open-item">Open</button>
+        </div>
+        <div id="file-details">
+          <h3>Virtual Drive</h3>
+          <p>Select an item in the tree to reveal details.</p>
+          <div id="file-preview"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="window-footer">Nova File Explorer · Backed by Aurora virtual storage</div>
+  <div class="window-resizer"></div>
+</div>
+
+<!-- Paint Window -->
+<div class="window" id="paint-window" data-app="paint">
+  <div class="window-header">
+    <span class="window-title">Radiant Canvas</span>
+    <div class="window-controls">
+      <button data-action="minimize"></button>
+      <button data-action="focus"></button>
+      <button data-action="close"></button>
+    </div>
+  </div>
+  <div class="window-body">
+    <div id="paint-toolbar">
+      <div id="paint-colors"></div>
+      <input type="range" id="paint-size" min="2" max="32" value="6" />
+      <button id="paint-erase">Eraser</button>
+      <button id="paint-clear">Clear</button>
+      <button id="paint-save">Save to Files</button>
+    </div>
+    <canvas id="paint-canvas" width="600" height="360"></canvas>
+  </div>
+  <div class="window-footer">Radiant Canvas · Draw freely, then archive to the virtual drive</div>
+  <div class="window-resizer"></div>
+</div>
+
+<!-- Game Window -->
+<div class="window" id="game-window" data-app="game">
+  <div class="window-header">
+    <span class="window-title">Stellar Runner</span>
+    <div class="window-controls">
+      <button data-action="minimize"></button>
+      <button data-action="focus"></button>
+      <button data-action="close"></button>
+    </div>
+  </div>
+  <div class="window-body" style="position:relative;">
+    <canvas id="game-canvas" width="640" height="420"></canvas>
+    <div id="game-overlay">
+      <h2>Stellar Runner</h2>
+      <p>Dash through meteor fields.<br>Use ← → arrows to move, space to pulse.</p>
+      <button id="game-start" style="margin-top:12px; padding:8px 18px; border-radius:10px; border:none; background:rgba(51,161,255,0.6); color:#fff; cursor:pointer;">Engage</button>
+    </div>
+  </div>
+  <div class="window-footer">Stellar Runner · Survive and rack up points</div>
+  <div class="window-resizer"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.23.4/ace.js" integrity="sha512-wXPWBwPVLckUOjwaJQNhXRzqPrYEL7YUox7P3+OK2VV4oG0RXnA3XjT4GgWmkIlYp54ByS1xdGVAEkut1YGZIA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+<script src="game_logic.js"></script>
+<script>
+(function() {
+  const appConfig = {
+    textpad: { name: "Nebula TextPad", icon: "📝", windowId: "text-editor-window", launchX: 80, launchY: 80 },
+    terminal: { name: "Celestia Terminal", icon: ">_", windowId: "terminal-window", launchX: 160, launchY: 120 },
+    code: { name: "Aurora Code Studio", icon: "💻", windowId: "code-editor-window", launchX: 240, launchY: 160 },
+    files: { name: "Nova File Explorer", icon: "🗂️", windowId: "file-manager-window", launchX: 320, launchY: 120 },
+    paint: { name: "Radiant Canvas", icon: "🎨", windowId: "paint-window", launchX: 400, launchY: 120 },
+    game: { name: "Stellar Runner", icon: "🕹️", windowId: "game-window", launchX: 200, launchY: 200 }
+  };
+
+  const desktopIconsContainer = document.getElementById("desktop-icons");
+  const startMenuGrid = document.getElementById("start-menu-grid");
+  const taskbar = document.getElementById("taskbar-apps");
+  const startMenu = document.getElementById("start-menu");
+  const startButton = document.getElementById("start-button");
+  const notificationCenter = document.getElementById("notification-center");
+  const trayNotifications = document.getElementById("tray-notifications");
+  const clock = document.getElementById("clock");
+
+  const windows = {};
+  let zIndexCounter = 100;
+  let isStartMenuOpen = false;
+  let isNotificationOpen = false;
+
+  const createDesktopIcon = (appId, config) => {
+    const icon = document.createElement("div");
+    icon.className = "icon";
+    icon.dataset.launch = appId;
+    icon.innerHTML = `<span class="emoji">${config.icon}</span><span>${config.name}</span>`;
+    icon.addEventListener("dblclick", () => openApp(appId));
+    desktopIconsContainer.appendChild(icon);
+  };
+
+  const createStartItem = (appId, config) => {
+    const item = document.createElement("div");
+    item.className = "start-app";
+    item.dataset.launch = appId;
+    item.innerHTML = `<div class="emoji">${config.icon}</div><div>${config.name}</div>`;
+    item.addEventListener("click", () => {
+      openApp(appId);
+      toggleStartMenu(false);
+    });
+    startMenuGrid.appendChild(item);
+  };
+
+  const createTaskbarButton = (appId, config) => {
+    const button = document.createElement("div");
+    button.className = "taskbar-button";
+    button.dataset.app = appId;
+    button.innerHTML = `<span>${config.icon} ${config.name}</span><span>●</span>`;
+    button.addEventListener("click", () => {
+      const appWindow = windows[appId];
+      if (!appWindow) return;
+      if (appWindow.classList.contains("hidden")) {
+        restoreWindow(appWindow);
+        focusWindow(appWindow);
+      } else if (appWindow.style.display === "none") {
+        openApp(appId);
+      } else {
+        toggleMinimizeWindow(appWindow);
+      }
+    });
+    taskbar.appendChild(button);
+    return button;
+  };
+
+  const createDesktopFileIcon = (fileName, filePath) => {
+    const icon = document.createElement("div");
+    icon.className = "icon file-icon";
+    icon.dataset.filepath = filePath;
+    
+    const fileIcon = fileName.endsWith('.txt') ? '📄' : 
+                     fileName.endsWith('.py') ? '🐍' :
+                     fileName.endsWith('.js') ? '💾' : '📋';
+    
+    icon.innerHTML = `<span class="emoji">${fileIcon}</span><span>${fileName}</span>`;
+    icon.addEventListener("dblclick", () => {
+      const normalized = resolvePath(filePath, fileSystem?.name || "Aurora");
+      openPath(normalized, false);
+    });
+    desktopIconsContainer.appendChild(icon);
+  };
+
+  const initDesktop = () => {
+    Object.entries(appConfig).forEach(([appId, config]) => {
+      createDesktopIcon(appId, config);
+      createStartItem(appId, config);
+      const win = document.getElementById(config.windowId);
+      if (win) {
+        windows[appId] = win;
+        makeWindowInteractive(win, appId, config);
+      }
+    });
+
+    // Create desktop file icons for important files
+    if (fileSystem) {
+      createDesktopFileIcon("MISSION_BRIEFING.txt", "MISSION_BRIEFING.txt");
+      createDesktopFileIcon("Readme.txt", "Readme.txt");
+    }
+
+    document.addEventListener("click", (e) => {
+      if (!startMenu.contains(e.target) && e.target !== startButton) {
+        toggleStartMenu(false);
+      }
+      if (!notificationCenter.contains(e.target) && e.target !== trayNotifications) {
+        toggleNotification(false);
+      }
+    });
+
+    startButton.addEventListener("click", () => toggleStartMenu());
+    trayNotifications.addEventListener("click", (e) => {
+      e.stopPropagation();
+      toggleNotification();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.metaKey || e.ctrlKey) {
+        if (e.key.toLowerCase() === "e") {
+          e.preventDefault();
+          openApp("files");
+        }
+        if (e.key.toLowerCase() === "r") {
+          e.preventDefault();
+          openApp("code");
+        }
+        if (e.key.toLowerCase() === "t") {
+          e.preventDefault();
+          openApp("terminal");
+        }
+      }
+      if (e.key === "Escape") {
+        toggleStartMenu(false);
+      }
+    });
+  };
+
+  const toggleStartMenu = (state) => {
+    isStartMenuOpen = typeof state === "boolean" ? state : !isStartMenuOpen;
+    startMenu.style.display = isStartMenuOpen ? "block" : "none";
+  };
+
+  const toggleNotification = (state) => {
+    isNotificationOpen = typeof state === "boolean" ? state : !isNotificationOpen;
+    notificationCenter.style.display = isNotificationOpen ? "block" : "none";
+  };
+
+  const focusWindow = (win) => {
+    document.querySelectorAll(".window").forEach((w) => w.classList.remove("active"));
+    win.classList.add("active");
+    win.style.zIndex = ++zIndexCounter;
+    const appId = win.dataset.app;
+    document.querySelectorAll(".taskbar-button").forEach(btn => btn.classList.remove("active"));
+    const taskBtn = document.querySelector(`.taskbar-button[data-app="${appId}"]`);
+    if (taskBtn) taskBtn.classList.add("active");
+  };
+
+  const toggleMinimizeWindow = (win) => {
+    if (win.style.display === "none" || win.classList.contains("hidden")) {
+      restoreWindow(win);
+      return;
+    }
+    win.classList.add("hidden");
+    const appId = win.dataset.app;
+    const taskBtn = document.querySelector(`.taskbar-button[data-app="${appId}"]`);
+    if (taskBtn) taskBtn.classList.remove("active");
+  };
+
+  const restoreWindow = (win) => {
+    win.classList.remove("hidden");
+    win.style.display = "flex";
+    focusWindow(win);
+  };
+
+  const closeWindow = (win) => {
+    win.style.display = "none";
+    win.classList.remove("hidden");
+    const appId = win.dataset.app;
+    const taskBtn = document.querySelector(`.taskbar-button[data-app="${appId}"]`);
+    if (taskBtn) taskBtn.remove();
+  };
+
+  const openApp = (appId) => {
+    const config = appConfig[appId];
+    const win = windows[appId];
+    if (!win || !config) return;
+    if (win.style.display !== "flex") {
+      win.style.display = "flex";
+      win.style.left = (config.launchX + Math.random() * 60) + "px";
+      win.style.top = (config.launchY + Math.random() * 60) + "px";
+    }
+    focusWindow(win);
+    const existingBtn = document.querySelector(`.taskbar-button[data-app="${appId}"]`);
+    if (!existingBtn) {
+      createTaskbarButton(appId, config).classList.add("active");
+    } else {
+      existingBtn.classList.add("active");
+    }
+    if (appId === "terminal") {
+      document.getElementById("terminal-input").focus();
+    }
+    if (appId === "textpad") {
+      document.getElementById("text-editor").focus();
+    }
+  };
+
+  const makeWindowInteractive = (win, appId, config) => {
+    const header = win.querySelector(".window-header");
+    const controls = win.querySelectorAll(".window-controls button");
+    const resizer = win.querySelector(".window-resizer");
+    let dragOffsetX = 0;
+    let dragOffsetY = 0;
+    let isDragging = false;
+
+    header.addEventListener("mousedown", (e) => {
+      if (e.target.closest(".window-controls")) return;
+      isDragging = true;
+      dragOffsetX = e.clientX - win.getBoundingClientRect().left;
+      dragOffsetY = e.clientY - win.getBoundingClientRect().top;
+      header.style.cursor = "grabbing";
+      focusWindow(win);
+    });
+
+    document.addEventListener("mousemove", (e) => {
+      if (!isDragging) return;
+      const x = e.clientX - dragOffsetX;
+      const y = e.clientY - dragOffsetY;
+      win.style.left = Math.max(0, Math.min(window.innerWidth - win.offsetWidth, x)) + "px";
+      win.style.top = Math.max(0, Math.min(window.innerHeight - win.offsetHeight - 60, y)) + "px";
+    });
+
+    document.addEventListener("mouseup", () => {
+      if (isDragging) {
+        isDragging = false;
+        header.style.cursor = "grab";
+      }
+    });
+
+    resizer.addEventListener("mousedown", (e) => {
+      e.stopPropagation();
+      const startX = e.clientX;
+      const startY = e.clientY;
+      const startWidth = win.offsetWidth;
+      const startHeight = win.offsetHeight;
+
+      const onMove = (ev) => {
+        const newWidth = Math.max(360, startWidth + (ev.clientX - startX));
+        const newHeight = Math.max(260, startHeight + (ev.clientY - startY));
+        win.style.width = newWidth + "px";
+        win.style.height = newHeight + "px";
+        win.dispatchEvent(new Event("window-resized"));
+      };
+
+      const onUp = () => {
+        document.removeEventListener("mousemove", onMove);
+        document.removeEventListener("mouseup", onUp);
+      };
+
+      document.addEventListener("mousemove", onMove);
+      document.addEventListener("mouseup", onUp);
+    });
+
+    controls.forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const action = btn.dataset.action;
+        if (action === "close") {
+          closeWindow(win);
+        }
+        if (action === "minimize") {
+          toggleMinimizeWindow(win);
+        }
+        if (action === "focus") {
+          focusWindow(win);
+        }
+      });
+    });
+
+    win.addEventListener("mousedown", () => focusWindow(win));
+  };
+
+  const updateClock = () => {
+    const now = new Date();
+    clock.textContent = now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  };
+
+  setInterval(updateClock, 10_000);
+  updateClock();
+
+  // Boot sequence
+  const bootScreen = document.getElementById("boot-screen");
+  const desktop = document.getElementById("desktop");
+  setTimeout(() => {
+    bootScreen.style.opacity = "0";
+    setTimeout(() => {
+      bootScreen.style.display = "none";
+      desktop.style.display = "block";
+      document.body.classList.remove("loading");
+      initializeStarfield();
+      initializeFileSystem();
+      initDesktop();
+      initializeTextEditor();
+      initializeTerminal();
+      initializeCodeEditor();
+      initializeFileManager();
+      initializePaint();
+      initializeGame();
+      animateMeters();
+      updateStats();
+      setTimeout(() => toggleNotification(true), 1200);
+    }, 1000);
+  }, 5100);
+
+  // Starfield background
+  const initializeStarfield = () => {
+    const canvas = document.getElementById("starfield");
+    const ctx = canvas.getContext("2d");
+    let stars = [];
+    const STAR_COUNT = 160;
+
+    const resize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+
+    const createStars = () => {
+      stars = Array.from({ length: STAR_COUNT }, () => ({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        size: Math.random() * 1.4 + 0.2,
+        speed: Math.random() * 0.4 + 0.1,
+        alpha: Math.random() * 0.7 + 0.3
+      }));
+    };
+
+    const update = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      stars.forEach((star) => {
+        star.y += star.speed;
+        if (star.y > canvas.height) {
+          star.y = 0;
+          star.x = Math.random() * canvas.width;
+        }
+        star.alpha += (Math.random() - 0.5) * 0.02;
+        star.alpha = Math.max(0.2, Math.min(1, star.alpha));
+        ctx.fillStyle = `rgba(255, 255, 255, ${star.alpha})`;
+        ctx.fillRect(star.x, star.y, star.size, star.size);
+      });
+      requestAnimationFrame(update);
+    };
+
+    window.addEventListener("resize", () => {
+      resize();
+      createStars();
+    });
+
+    resize();
+    createStars();
+    update();
+  };
+
+  // Virtual File System
+  const storageKey = "aurora-webos-fs-v1";
+  let fileSystem = null;
+  let terminalCwd = "Aurora";
+  let pyodideInstance = null;
+  let pyodideSyncScheduled = false;
+  let lastSyncedPaths = new Set();
+
+  const schedulePyodideSync = () => {
+    if (!pyodideInstance || pyodideSyncScheduled) return;
+    pyodideSyncScheduled = true;
+    requestAnimationFrame(() => {
+      pyodideSyncScheduled = false;
+      try {
+        syncFileSystemToPyodide(pyodideInstance);
+      } catch (err) {
+        console.warn("Aurora Pyodide sync failed", err);
+      }
+    });
+  };
+
+  const storageAvailable = (() => {
+    try {
+      const key = "__aurora_storage_probe__";
+      window.localStorage.setItem(key, "ok");
+      window.localStorage.removeItem(key);
+      return true;
+    } catch (err) {
+      console.warn("Aurora storage unavailable; session will be ephemeral.", err);
+      return false;
+    }
+  })();
+
+  const defaultFileSystem = () => {
+    const now = new Date();
+    return {
+      name: "Aurora",
+      type: "folder",
+      created: now,
+      updated: now,
+      children: [
+        {
+          name: "MISSION_BRIEFING.txt",
+          type: "file",
+          created: now,
+          updated: now,
+          content: `╔═══════════════════════════════════════════════════════════╗
+║           OPERATION AURORA - CLASSIFIED BRIEFING          ║
+║                    SECURITY LEVEL: OMEGA                  ║
+╚═══════════════════════════════════════════════════════════╝
+
+Agent,
+
+You have been selected for a critical intelligence operation.
+A classified folder has been secured on this system containing 
+vital information about Project Aurora's true purpose.
+
+YOUR MISSION:
+Unlock the CLASSIFIED folder by discovering the password hidden
+throughout this operating system.
+
+INTELLIGENCE BRIEFING:
+- The password is encrypted using a CIPHER
+- 7 CLUES are scattered across different applications
+- Each clue reveals part of the decryption method
+- You have 5 ATTEMPTS to unlock the folder
+- Think like a cryptanalyst - patterns matter
+
+RECOMMENDED APPROACH:
+1. Explore each application thoroughly
+2. Look for unusual patterns, hidden messages
+3. Use the Clue Journal (📖 button) to track discoveries
+4. The cipher tool can help decode encrypted text
+5. Pay attention to the NUMBER 7 - it's significant
+
+CLUE LOCATIONS (HINTS):
+- Terminal commands reveal secrets
+- Code files contain hidden comments  
+- Creating specific files triggers discoveries
+- The paint app hides visual patterns
+- System notifications carry intelligence
+- Time itself can reveal truths
+- Welcome messages aren't always what they seem
+
+FINAL WARNING:
+The encrypted password is: ZALSSHY
+But entering it directly will FAIL. You must DECODE it first.
+
+Good luck, Agent. The fate of Aurora depends on you.
+
+- Command [REDACTED]
+- Timestamp: ${now.toISOString()}
+
+P.S. Caesar once said: "The secret lies in the shift."
+`
+        },
+        {
+          name: "Documents",
+          type: "folder",
+          created: now,
+          updated: now,
+          children: [
+            {
+              name: "Welcome.txt",
+              type: "file",
+              created: now,
+              updated: now,
+              content: `Welcome to Aurora WebOS - Your Gateway to Discovery
+
+This is more than just an operating system. It's a puzzle waiting
+to be solved. Look carefully, and you might find what you seek.
+
+The password has SEVEN letters. All capitals. No spaces.
+When encrypted, it becomes something else entirely.
+
+Remember: Not everything is as it appears. Some truths are hidden
+in plain sight, waiting for someone clever enough to find them.
+
+Explore. Discover. Decode.
+
+The CLASSIFIED folder awaits...
+
+[CLUE DISCOVERED: This message contains vital information about
+the password format - 7 letters, all capitals]`
+            }
+          ]
+        },
+        {
+          name: "Projects",
+          type: "folder",
+          created: now,
+          updated: now,
+          children: [
+            {
+              name: "demo.js",
+              type: "file",
+              created: now,
+              updated: now,
+              content: `// Aurora Project Demo
+// Standard JavaScript template
+
+console.log('Aurora initialized');
+
+// TODO: Implement main functionality
+// NOTE: The encrypted key is ZALSSHY
+// HINT: Use Caesar cipher with shift value of 7
+// WARNING: Direct use of encrypted key will fail
+
+function secretMessage() {
+  // This function demonstrates basic encryption
+  // Each character shifts 7 positions forward
+  // Example: A -> H, B -> I, C -> J
+  // Reverse the process to decrypt
+  return 'Hidden message decoded';
+}
+
+// Debugging utilities
+const DEBUG = {
+  cipher: 'caesar',
+  shift: 7,
+  encrypted: 'ZALSSHY',
+  // decrypted: [REDACTED]
+};
+
+// Main execution
+window.addEventListener('load', () => {
+  console.log('System ready');
+});`
+            },
+            {
+              name: "cipher_notes.txt",
+              type: "file",
+              created: now,
+              updated: now,
+              content: `CRYPTOGRAPHY RESEARCH NOTES
+===========================
+
+Caesar Cipher Implementation:
+- Named after Julius Caesar
+- Substitution cipher technique
+- Each letter shifts by fixed number
+- ROT13 is Caesar cipher with shift of 13
+
+PROJECT AURORA CIPHER ANALYSIS:
+- Shift value: 7 positions
+- Direction: Forward to encrypt, backward to decrypt
+- Example transformation:
+  A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
+  ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
+  H I J K L M N O P Q R S T U V W X Y Z A B C D E F G
+
+KEY OBSERVATION:
+If ZALSSHY is the encrypted form...
+Then working backward 7 positions reveals:
+Z(-7) = S
+A(-7) = T
+L(-7) = E
+... [continue the pattern]
+
+The truth lies in the reverse transformation.`
+            }
+          ]
+        },
+        {
+          name: "Media",
+          type: "folder",
+          created: now,
+          updated: now,
+          children: []
+        },
+        {
+          name: "CLASSIFIED",
+          type: "folder",
+          created: now,
+          updated: now,
+          children: [
+            {
+              name: "SECRET_MISSION.txt",
+              type: "file",
+              created: now,
+              updated: now,
+              content: `╔═══════════════════════════════════════════════════════════╗
+║              🌟 PROJECT AURORA - REVEALED 🌟              ║
+║                  TOP SECRET // OMEGA CLEARANCE            ║
+╚═══════════════════════════════════════════════════════════╝
+
+CONGRATULATIONS, AGENT!
+
+You have successfully decoded the cipher and proven your worth
+as an elite intelligence operative. The password "STELLAR" was
+hidden in plain sight, encrypted by a simple Caesar shift of 7.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+THE TRUTH ABOUT PROJECT AURORA:
+
+Project Aurora was never about creating just another operating
+system. It was a training simulation designed to identify 
+individuals with exceptional problem-solving abilities.
+
+You were being evaluated on:
+✓ Attention to detail
+✓ Pattern recognition  
+✓ Cryptographic reasoning
+✓ Persistence and determination
+✓ Creative thinking
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+THE REAL MISSION:
+
+Now that you've proven your capabilities, you're invited to join
+the Aurora Intelligence Division. Your skills in:
+
+- Code analysis (demo.js clues)
+- File system exploration  
+- Terminal command mastery
+- Visual pattern recognition (Paint app)
+- Cipher decryption
+- Time-based discovery
+- Notification monitoring
+
+...have all been documented and verified.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+YOUR STATISTICS:
+
+Check the Victory Screen for your complete performance report:
+- Clues discovered
+- Attempts used  
+- Time elapsed
+- Hints requested
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+WHAT'S NEXT?
+
+This Aurora system is now yours to explore freely. All 
+applications are fully functional:
+
+📝 Nebula TextPad - Write and edit documents
+💻 Aurora Code Studio - Write and execute code  
+>_ Celestia Terminal - Python programming environment
+🗂️ Nova File Explorer - Manage your virtual files
+🎨 Radiant Canvas - Digital art creation
+🕹️ Stellar Runner - Mini-game entertainment
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+A MESSAGE FROM THE ARCHITECT:
+
+"The best puzzles are those that teach while they challenge.
+You've learned about Caesar ciphers, explored a full OS, and
+proven that curiosity and intelligence can unlock any door.
+
+The STELLAR journey doesn't end here - it's just beginning."
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Want to play again? Click "Play Again" in the victory screen
+to reset the puzzle and try to beat your previous time!
+
+Share this experience with others and see how they fare!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ACHIEVEMENT UNLOCKED: Master Cryptanalyst 🏆
+
+Agent Status: ACTIVE
+Clearance Level: OMEGA ΩΩΩ
+Project Aurora: COMPLETE ✓
+
+Welcome to the team, Agent ${now.getTime().toString(36).toUpperCase()}.
+
+END TRANSMISSION
+`
+            },
+            {
+              name: "aurora_blueprint.txt",
+              type: "file",
+              created: now,
+              updated: now,
+              content: `AURORA SYSTEM ARCHITECTURE
+==========================
+
+This document contains the technical blueprint of the Aurora WebOS
+and the Mystery Game integration.
+
+GAME MECHANICS:
+--------------
+1. Password: STELLAR (encrypted as ZALSSHY via Caesar +7)
+2. 7 Clues distributed across system
+3. 5 Attempts to prevent brute force
+4. Hint system for guidance
+5. Progress tracking via localStorage
+
+CLUE TRIGGERS:
+-------------
+- Clue #1: Run "status" command in terminal
+- Clue #2: Open demo.js in code editor (auto-trigger)
+- Clue #3: Paint 5+ strokes on canvas
+- Clue #4: Create file named "HINT.txt"
+- Clue #5: System time shows 7:00 or 19:00
+- Clue #6: Open notification center
+- Clue #7: Read Welcome.txt (auto-trigger)
+
+EDUCATIONAL VALUE:
+-----------------
+Players learn about:
+- Caesar cipher cryptography
+- Pattern recognition
+- File system navigation
+- Code analysis
+- Problem decomposition
+- Persistence in puzzle-solving
+
+TECHNOLOGY STACK:
+----------------
+- Vanilla JavaScript (no frameworks)
+- localStorage for persistence
+- CSS animations for polish
+- Modular architecture
+
+The cipher was chosen for its historical significance and
+educational value - it's complex enough to require thought
+but simple enough to solve without external tools.
+
+STELLAR = Success Through Exploration, Logic, Learning, 
+          Analysis, and Reasoning.
+
+That's what this game is really about.`
+            }
+          ]
+        },
+        {
+          name: "Readme.txt",
+          type: "file",
+          created: now,
+          updated: now,
+          content: `Aurora WebOS - Interactive Mystery Edition
+===========================================
+
+Welcome to a unique experience that combines a fully functional
+operating system with an engaging puzzle game!
+
+🎮 WHAT IS THIS?
+This is Aurora WebOS, but with a twist - there's a locked
+CLASSIFIED folder on your desktop. Your mission: find the clues,
+decode the cipher, and unlock it!
+
+🎯 HOW TO PLAY:
+1. Read MISSION_BRIEFING.txt for your objectives
+2. Explore all the applications (File Manager, Terminal, Paint, etc.)
+3. Look for clues hidden throughout the system  
+4. Use the Clue Journal (📖 button) to track progress
+5. Decode the password and unlock the folder
+
+💡 HINTS:
+- Seven is a significant number
+- The cipher tool in the Clue Journal can help
+- Not all clues require complex actions
+- Pay attention to file contents and comments
+- Terminal commands can reveal secrets
+
+🛠️ FEATURES:
+- Full file system with persistence
+- Python terminal (Pyodide)
+- Code editor with syntax highlighting
+- Paint application
+- Mini-game (Stellar Runner)
+- And a mystery to solve!
+
+🏆 CHALLENGE YOURSELF:
+- Can you find all 7 clues?
+- How few attempts will you need?
+- What's your solve time?
+- Can you do it without hints?
+
+Start your investigation with MISSION_BRIEFING.txt!
+
+Good luck, Agent. 🕵️`
+        },
+        {
+          name: "Sample.py",
+          type: "file",
+          created: now,
+          updated: now,
+          content: `# Aurora WebOS - Python Sample Script
+# Demonstrating the Pyodide integration
+
+print('Hello from Aurora WebOS!')
+print('Python runtime is fully operational')
+
+# Hidden message for curious explorers
+def decode_message():
+    """
+    This function hints at the game's cipher mechanism.
+    The key to unlocking secrets is understanding how
+    characters transform when shifted by a magic number.
+    
+    What if I told you that shifting each letter in the
+    alphabet by 7 positions can encrypt a message?
+    
+    And that reversing the process reveals the truth?
+    """
+    encrypted = "ZALSSHY"
+    shift = 7
+    
+    # To decode, shift backward
+    decoded = ""
+    for char in encrypted:
+        if char.isalpha():
+            base = ord('A')
+            decoded += chr((ord(char) - base - shift) % 26 + base)
+    
+    # Uncomment to see the answer (but where's the fun in that?)
+    # print(f"Decoded: {decoded}")
+    
+    return "Figure it out yourself, Agent! 🕵️"
+
+# Try calling decode_message() and studying the code
+print(decode_message())`
+        }
+      ]
+    };
+  };
+
+  const reviveNodeDates = (node) => {
+    if (!node) return node;
+    if (node.created) node.created = new Date(node.created);
+    if (node.updated) node.updated = new Date(node.updated);
+    if (node.children) node.children.forEach(reviveNodeDates);
+    return node;
+  };
+
+  const loadFileSystemFromStorage = () => {
+    if (!storageAvailable) return null;
+    try {
+      const raw = window.localStorage.getItem(storageKey);
+      if (!raw) return null;
+      const parsed = JSON.parse(raw);
+      return reviveNodeDates(parsed);
+    } catch (err) {
+      console.warn("Failed to parse stored Aurora FS; creating fresh instance.", err);
+      return null;
+    }
+  };
+
+  const persistFileSystem = () => {
+    if (!storageAvailable || !fileSystem) return;
+    try {
+      const payload = JSON.stringify(fileSystem, (key, value) => (value instanceof Date ? value.toISOString() : value));
+      window.localStorage.setItem(storageKey, payload);
+      schedulePyodideSync();
+    } catch (err) {
+      console.warn("Unable to persist Aurora FS snapshot.", err);
+    }
+  };
+
+  const sanitizePath = (path) => (path || "").replace(/\\/g, "/").replace(/\/+/g, "/").trim();
+
+  const splitPath = (path) => path.split("/").filter(Boolean);
+
+  const resolvePath = (inputPath, base = terminalCwd) => {
+    const rootName = fileSystem?.name || "Aurora";
+    if (!inputPath || inputPath === ".") return base || rootName;
+    let cleaned = sanitizePath(inputPath);
+    let baseParts = splitPath(base || rootName);
+    if (!baseParts.length || baseParts[0] !== rootName) baseParts.unshift(rootName);
+    if (cleaned.startsWith("/")) {
+      cleaned = cleaned.slice(1);
+      baseParts = [rootName];
+    }
+    if (cleaned.toLowerCase().startsWith(`${rootName.toLowerCase()}/`)) {
+      cleaned = cleaned.slice(rootName.length + 1);
+      baseParts = [rootName];
+    }
+    const segments = splitPath(cleaned);
+    for (const segment of segments) {
+      if (segment === ".") continue;
+      if (segment === "..") {
+        if (baseParts.length > 1) baseParts.pop();
+        continue;
+      }
+      baseParts.push(segment);
+    }
+    if (!baseParts.length) baseParts = [rootName];
+    return baseParts.join("/");
+  };
+
+  const findNodeByPath = (path) => {
+    if (!fileSystem) return null;
+    const normalized = resolvePath(path, fileSystem.name);
+    const parts = splitPath(normalized);
+    if (!parts.length) return null;
+    const [rootName, ...rest] = parts;
+    if (rootName !== fileSystem.name) return null;
+    let current = fileSystem;
+    for (const part of rest) {
+      if (!current.children) return null;
+      current = current.children.find((child) => child.name === part);
+      if (!current) return null;
+    }
+    return current;
+  };
+
+  const ensureFolder = (target, name) => {
+    if (!target) return null;
+    if (!target.children) target.children = [];
+    const existing = target.children.find((child) => child.name === name && child.type === "folder");
+    if (existing) return existing;
+    const now = new Date();
+    const folder = { name, type: "folder", created: now, updated: now, children: [] };
+    target.children.push(folder);
+    target.updated = now;
+    return folder;
+  };
+
+  const addFile = (path, content = "") => {
+    if (!fileSystem) return null;
+    const normalized = resolvePath(path, fileSystem.name);
+    const parts = splitPath(normalized);
+    if (!parts.length) return null;
+    const fileName = parts.pop();
+    let current = fileSystem;
+    for (let i = 1; i < parts.length; i++) {
+      current = ensureFolder(current, parts[i]);
+    }
+    if (!current) return null;
+    if (!current.children) current.children = [];
+    const existing = current.children.find((child) => child.name === fileName);
+    const now = new Date();
+    if (existing) {
+      existing.content = content;
+      existing.updated = now;
+      persistFileSystem();
+      return existing;
+    }
+    const file = { name: fileName, type: "file", created: now, updated: now, content };
+    current.children.push(file);
+    current.updated = now;
+    persistFileSystem();
+    return file;
+  };
+
+  const removeNode = (path) => {
+    if (!fileSystem) return false;
+    const normalized = resolvePath(path, fileSystem.name);
+    const parts = splitPath(normalized);
+    if (parts.length <= 1) return false;
+    const name = parts.pop();
+    let current = fileSystem;
+    for (let i = 1; i < parts.length; i++) {
+      current = current.children?.find((child) => child.name === parts[i]);
+      if (!current) return false;
+    }
+    const index = current.children?.findIndex((child) => child.name === name);
+    if (index >= 0) {
+      current.children.splice(index, 1);
+      current.updated = new Date();
+      persistFileSystem();
+      return true;
+    }
+    return false;
+  };
+
+  const renameNode = (path, newName) => {
+    if (!fileSystem || !newName) return false;
+    const normalized = resolvePath(path, fileSystem.name);
+    const parts = splitPath(normalized);
+    if (parts.length <= 1) return false;
+    const parentPath = parts.slice(0, -1).join("/");
+    const parent = findNodeByPath(parentPath);
+    if (!parent || !parent.children) return false;
+    const node = parent.children.find((child) => child.name === parts[parts.length - 1]);
+    if (!node) return false;
+    const duplicate = parent.children.find((child) => child !== node && child.name === newName);
+    if (duplicate) return false;
+    node.name = newName;
+    node.updated = new Date();
+    parent.updated = new Date();
+    persistFileSystem();
+    return true;
+  };
+
+  const listFolder = (path) => {
+    const node = findNodeByPath(path || (fileSystem?.name || "Aurora"));
+    if (node && node.children) {
+      return node.children;
+    }
+    return [];
+  };
+
+  // Text Editor
+  let textCurrentPath = null;
+  const textEditor = document.getElementById("text-editor");
+  const textStatus = document.getElementById("text-editor-status");
+
+  const initializeTextEditor = () => {
+    document.getElementById("text-new").addEventListener("click", () => {
+      textEditor.value = "";
+      textCurrentPath = null;
+      textStatus.textContent = "Untitled";
+    });
+
+    document.getElementById("text-open").addEventListener("click", () => {
+      openApp("files");
+      highlightFileManagerAction("Select a text file and click Open");
+    });
+
+    document.getElementById("text-save").addEventListener("click", () => {
+      const path = textCurrentPath || prompt("Save as (e.g., Documents/notes.txt)", "Documents/notes.txt");
+      if (!path) return;
+      addFile(path, textEditor.value);
+      textCurrentPath = path;
+      textStatus.textContent = path;
+      updateFileTree();
+    });
+
+    document.getElementById("text-download").addEventListener("click", () => {
+      const blob = new Blob([textEditor.value], { type: "text/plain" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = (textCurrentPath || "untitled") + ".txt";
+      link.click();
+      URL.revokeObjectURL(url);
+    });
+  };
+
+  const loadTextIntoEditor = (path) => {
+    const node = findNodeByPath(path);
+    if (node && node.type === "file") {
+      textEditor.value = node.content || "";
+      textCurrentPath = path;
+      textStatus.textContent = path;
+      openApp("textpad");
+      
+      // Mystery game: Trigger clue #7 if Welcome.txt is opened
+      if (path.includes('Welcome.txt') && window.AuroraMystery) {
+        setTimeout(() => window.AuroraMystery.discoverClue('clue7'), 500);
+      }
+    }
+  };
+
+  // Expose to global scope for game integration
+  window.loadTextIntoEditor = loadTextIntoEditor;
+  window.openApp = openApp;
+  window.addFile = addFile;
+  window.findNodeByPath = findNodeByPath;
+
+  // Terminal with Pyodide
+  let pyodideReadyPromise = null;
+  const terminalOutput = document.getElementById("terminal-output");
+  const terminalInput = document.getElementById("terminal-input");
+  const terminalStatus = document.getElementById("terminal-status");
+  let terminalStatusHint = "Loading Pyodide...";
+  let terminalHistory = [];
+  let historyIndex = -1;
+  let snippetCount = 0;
+
+  const appendTerminalOutput = (text) => {
+    if (text === undefined || text === null) return;
+    terminalOutput.textContent += text + "\n";
+    terminalOutput.scrollTop = terminalOutput.scrollHeight;
+  };
+
+  // Expose to global scope
+  window.appendTerminalOutput = appendTerminalOutput;
+
+  const formatTerminalPath = (path) => {
+    const root = fileSystem?.name || "Aurora";
+    const normalized = resolvePath(path, root);
+    const relative = normalized.startsWith(root) ? normalized.slice(root.length) : normalized;
+    return `~${relative ? `/${relative}` : ""}`;
+  };
+
+  const updateTerminalStatus = (message) => {
+    if (!terminalStatus) return;
+    if (message) {
+      terminalStatusHint = message;
+    }
+    if (pyodideInstance) {
+      terminalStatus.textContent = `Pyodide ${pyodideInstance.version || ""} ready · cwd: ${formatTerminalPath(terminalCwd)}`;
+      return;
+    }
+    terminalStatus.textContent = `${terminalStatusHint} · cwd: ${formatTerminalPath(terminalCwd)}`;
+  };
+
+  const tokenizeCommand = (input) => {
+    const tokens = [];
+    const regex = /"([^"\\]*(?:\\.[^"\\]*)*)"|'([^'\\]*(?:\\.[^'\\]*)*)'|`([^`\\]*(?:\\.[^`\\]*)*)`|(\S+)/g;
+    let match;
+    while ((match = regex.exec(input))) {
+      const captured = match[1] ?? match[2] ?? match[3] ?? match[4];
+      tokens.push(captured.replace(/\\(["'`\\])/g, "$1"));
+    }
+    return tokens;
+  };
+
+  const normalizeTerminalArg = (arg) => {
+    const root = fileSystem?.name || "Aurora";
+    if (!arg || arg === "~") return root;
+    return arg.replace(/^~(?=\/|$)/, root);
+  };
+
+  const ensurePyodideReady = async () => {
+    const pyodide = await pyodideReadyPromise;
+    if (!pyodide) {
+      throw new Error("Python runtime is unavailable.");
+    }
+    return pyodide;
+  };
+
+  const runFileFromPath = async (path) => {
+    const normalized = resolvePath(path, terminalCwd);
+    const node = findNodeByPath(normalized);
+    if (!node || node.type !== "file") {
+      appendTerminalOutput(`[run] File not found: ${path}`);
+      return;
+    }
+    if (/\.py$/i.test(normalized)) {
+      try {
+        const pyodide = await ensurePyodideReady();
+        if (pyodideInstance) {
+          try { syncFileSystemToPyodide(pyodideInstance); } catch (syncErr) { console.warn("Pyodide sync before run failed", syncErr); }
+        }
+        const result = await pyodide.runPythonAsync(node.content || "");
+        appendTerminalOutput(result !== undefined ? String(result) : "[run] OK");
+        incrementStat("snippets");
+      } catch (err) {
+        appendTerminalOutput(`[run] Python error: ${err}`);
+      }
+      return;
+    }
+    if (/\.js$/i.test(normalized)) {
+      try {
+        const result = eval(node.content || "");
+        appendTerminalOutput(result !== undefined ? String(result) : "[run] OK");
+        incrementStat("snippets");
+      } catch (err) {
+        appendTerminalOutput(`[run] JavaScript error: ${err.message}`);
+      }
+      return;
+    }
+    appendTerminalOutput(`[run] Unsupported file type: ${node.name}`);
+  };
+
+  const handleShellCommand = async (line) => {
+    const parts = tokenizeCommand(line);
+    if (!parts.length) return true;
+    const cmd = parts[0].toLowerCase();
+    const args = parts.slice(1);
+    const root = fileSystem?.name || "Aurora";
+
+    switch (cmd) {
+      case "help": {
+        appendTerminalOutput([
+          "Available commands:",
+          "  help                Show this reference",
+          "  clear               Clear the console",
+          "  ls [path]           List directory contents",
+          "  cd [path]           Change working directory",
+          "  pwd                 Display current directory",
+          "  cat <file>          Show file contents",
+          "  open <file>         Launch file in appropriate app",
+          "  touch <file>        Create or update a file",
+          "  mkdir <folder>      Create a folder",
+          "  rm <path>           Delete file or folder",
+          "  run <file>          Execute .py or .js source",
+          "  tree [path]         Visualize directory tree",
+          "  export <file>       Download file locally",
+          "  history             Show recent commands",
+          "  status              Show session statistics",
+          "  !<js>               Run JavaScript inline"
+        ].join("\n"));
+        return true;
+      }
+      case "clear": {
+        terminalOutput.textContent = "";
+        return true;
+      }
+      case "pwd": {
+        appendTerminalOutput(formatTerminalPath(terminalCwd));
+        return true;
+      }
+      case "ls":
+      case "dir": {
+        const targetArg = args[0] ? normalizeTerminalArg(args[0]) : terminalCwd;
+        const normalized = resolvePath(targetArg, terminalCwd);
+        const node = findNodeByPath(normalized);
+        if (!node) {
+          appendTerminalOutput(`[ls] Path not found: ${args[0] || formatTerminalPath(targetArg)}`);
+          return true;
+        }
+        if (node.type === "file") {
+          const size = typeof node.content === "string" ? node.content.length : 0;
+          appendTerminalOutput(`📄 ${node.name} (${size} chars)`);
+          return true;
+        }
+        const entries = (node.children || []).slice().sort((a, b) => a.name.localeCompare(b.name));
+        if (!entries.length) {
+          appendTerminalOutput(`[ls] ${formatTerminalPath(normalized)} is empty`);
+          return true;
+        }
+        const lines = entries.map((child) => `${child.type === "folder" ? "📁" : "📄"} ${child.name}${child.type === "folder" ? "/" : ""}`);
+        appendTerminalOutput(lines.join("\n"));
+        return true;
+      }
+      case "cd": {
+        const target = args[0] ? normalizeTerminalArg(args[0]) : root;
+        const normalized = resolvePath(target, terminalCwd);
+        const node = findNodeByPath(normalized);
+        if (!node || node.type !== "folder") {
+          appendTerminalOutput(`[cd] Not a directory: ${args[0] || target}`);
+          return true;
+        }
+        terminalCwd = normalized;
+        updateTerminalStatus();
+        appendTerminalOutput(formatTerminalPath(terminalCwd));
+        return true;
+      }
+      case "mkdir": {
+        if (!args.length) {
+          appendTerminalOutput("Usage: mkdir <folder>");
+          return true;
+        }
+        const target = normalizeTerminalArg(args[0]);
+        const normalized = resolvePath(target, terminalCwd);
+        const parentPath = normalized.split("/").slice(0, -1).join("/") || root;
+        const parent = findNodeByPath(parentPath);
+        if (!parent || parent.type !== "folder") {
+          appendTerminalOutput(`[mkdir] Parent not found: ${parentPath}`);
+          return true;
+        }
+        const folderName = normalized.split("/").pop();
+        if (parent.children?.some((child) => child.name === folderName)) {
+          appendTerminalOutput(`[mkdir] ${folderName} already exists`);
+          return true;
+        }
+        ensureFolder(parent, folderName);
+        persistFileSystem();
+        updateFileTree();
+        appendTerminalOutput(`[mkdir] ${formatTerminalPath(normalized)}`);
+        return true;
+      }
+      case "touch": {
+        if (!args.length) {
+          appendTerminalOutput("Usage: touch <file>");
+          return true;
+        }
+        const target = normalizeTerminalArg(args[0]);
+        const normalized = resolvePath(target, terminalCwd);
+        addFile(normalized, "");
+        updateFileTree();
+        appendTerminalOutput(`[touch] ${formatTerminalPath(normalized)}`);
+        return true;
+      }
+      case "rm": {
+        if (!args.length) {
+          appendTerminalOutput("Usage: rm <path>");
+          return true;
+        }
+        const target = normalizeTerminalArg(args[0]);
+        const normalized = resolvePath(target, terminalCwd);
+        if (normalized === root) {
+          appendTerminalOutput("[rm] Cannot remove root directory");
+          return true;
+        }
+        const removed = removeNode(normalized);
+        if (!removed) {
+          appendTerminalOutput(`[rm] Unable to remove ${target}`);
+          return true;
+        }
+        updateFileTree();
+        appendTerminalOutput(`[rm] Removed ${formatTerminalPath(normalized)}`);
+        return true;
+      }
+      case "cat": {
+        if (!args.length) {
+          appendTerminalOutput("Usage: cat <file>");
+          return true;
+        }
+        const target = normalizeTerminalArg(args[0]);
+        const normalized = resolvePath(target, terminalCwd);
+        const node = findNodeByPath(normalized);
+        if (!node || node.type !== "file") {
+          appendTerminalOutput(`[cat] File not found: ${target}`);
+          return true;
+        }
+        if (typeof node.content === "string" && node.content.startsWith("data:")) {
+          appendTerminalOutput(`[cat] Binary content (${node.content.length} bytes encoded)`);
+          return true;
+        }
+        appendTerminalOutput(node.content || "");
+        incrementStat("files");
+        return true;
+      }
+      case "open": {
+        if (!args.length) {
+          appendTerminalOutput("Usage: open <path>");
+          return true;
+        }
+        const target = normalizeTerminalArg(args[0]);
+        const normalized = resolvePath(target, terminalCwd);
+        if (!openPath(normalized, false)) {
+          appendTerminalOutput(`[open] Unable to launch ${target}`);
+        } else {
+          appendTerminalOutput(`[open] Launching ${formatTerminalPath(normalized)}`);
+        }
+        return true;
+      }
+      case "run": {
+        if (!args.length) {
+          appendTerminalOutput("Usage: run <file>");
+          return true;
+        }
+        await runFileFromPath(normalizeTerminalArg(args[0]));
+        return true;
+      }
+      case "tree": {
+        const target = args[0] ? normalizeTerminalArg(args[0]) : terminalCwd;
+        const normalized = resolvePath(target, terminalCwd);
+        const node = findNodeByPath(normalized);
+        if (!node) {
+          appendTerminalOutput(`[tree] Path not found: ${args[0] || formatTerminalPath(target)}`);
+          return true;
+        }
+        const lines = [];
+        const renderTree = (current, prefix = "", isLast = true, isRoot = false) => {
+          const icon = current.type === "folder" ? "📁" : "📄";
+          const connector = isRoot ? "" : (isLast ? "└─ " : "├─ ");
+          lines.push(`${prefix}${connector}${icon} ${current.name}`);
+          if (current.type !== "folder" || !current.children || !current.children.length) return;
+          const nextPrefix = prefix + (isRoot ? "" : (isLast ? "   " : "│  "));
+          const lastIndex = current.children.length - 1;
+          current.children.forEach((child, index) => {
+            renderTree(child, nextPrefix, index === lastIndex, false);
+          });
+        };
+        renderTree(node, "", true, true);
+        appendTerminalOutput(lines.join("\n"));
+        return true;
+      }
+      case "export": {
+        if (!args.length) {
+          appendTerminalOutput("Usage: export <file>");
+          return true;
+        }
+        const target = normalizeTerminalArg(args[0]);
+        const normalized = resolvePath(target, terminalCwd);
+        const node = findNodeByPath(normalized);
+        if (!node || node.type !== "file") {
+          appendTerminalOutput(`[export] File not found: ${target}`);
+          return true;
+        }
+        if (typeof node.content === "string" && node.content.startsWith("data:")) {
+          const link = document.createElement("a");
+          link.href = node.content;
+          link.download = node.name;
+          link.click();
+        } else {
+          const blob = new Blob([node.content || ""], { type: "text/plain" });
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement("a");
+          link.href = url;
+          link.download = node.name;
+          link.click();
+          setTimeout(() => URL.revokeObjectURL(url), 2000);
+        }
+        appendTerminalOutput(`[export] Downloading ${node.name}`);
+        return true;
+      }
+      case "history": {
+        if (!terminalHistory.length) {
+          appendTerminalOutput("[history] empty");
+          return true;
+        }
+        const lines = terminalHistory.slice(0, 20).map((entry, index) => `${index + 1}: ${entry}`);
+        appendTerminalOutput(lines.join("\n"));
+        return true;
+      }
+      case "status": {
+        appendTerminalOutput([
+          `cwd: ${formatTerminalPath(terminalCwd)}`,
+          `files opened: ${filesLoaded}`,
+          `snippets executed: ${snippetCount}`,
+          `paint strokes: ${paintStrokes}`
+        ].join("\n"));
+        return true;
+      }
+      default:
+        return false;
+    }
+  };
+
+  const initializeTerminal = () => {
+    appendTerminalOutput("Aurora Celestia Terminal\nType `help` for built-ins or run Python directly.");
+    updateTerminalStatus("Loading Pyodide...");
+    pyodideReadyPromise = loadPyodide({ indexURL: "https://cdn.jsdelivr.net/pyodide/v0.24.1/full/" }).then(async (pyodide) => {
+      pyodideInstance = pyodide;
+      appendTerminalOutput(`Python ${pyodide.version} ready. Try: print('Aurora rocks!')`);
+      updateTerminalStatus();
+      syncFileSystemToPyodide(pyodide);
+      return pyodide;
+    }).catch((err) => {
+      appendTerminalOutput("Error loading Python runtime: " + err.message);
+      updateTerminalStatus("Pyodide load failed");
+      return null;
+    });
+
+    terminalInput.addEventListener("keydown", async (e) => {
+      if (!e.shiftKey && e.key === "Enter") {
+        e.preventDefault();
+        const command = terminalInput.value.trim();
+        if (!command) return;
+        appendTerminalOutput(`>>> ${command}`);
+        terminalHistory.unshift(command);
+        historyIndex = -1;
+        terminalInput.value = "";
+
+        if (command.startsWith("!")) {
+          try {
+            const jsResult = eval(command.slice(1));
+            if (jsResult !== undefined) appendTerminalOutput(String(jsResult));
+            incrementStat("snippets");
+          } catch (err) {
+            appendTerminalOutput(String(err));
+          }
+          return;
+        }
+
+        try {
+          const handled = await handleShellCommand(command);
+          if (handled) return;
+        } catch (err) {
+          appendTerminalOutput(String(err));
+          return;
+        }
+
+        const pyodide = await pyodideReadyPromise;
+        if (!pyodide) {
+          appendTerminalOutput("Python runtime unavailable.");
+          return;
+        }
+
+        try {
+          const result = await pyodide.runPythonAsync(command);
+          if (result !== undefined) {
+            appendTerminalOutput(String(result));
+          }
+          incrementStat("snippets");
+        } catch (err) {
+          appendTerminalOutput(String(err));
+        }
+      }
+
+      if (e.key === "ArrowUp") {
+        e.preventDefault();
+        if (!terminalHistory.length) return;
+        historyIndex = Math.min(historyIndex + 1, terminalHistory.length - 1);
+        terminalInput.value = terminalHistory[historyIndex] || "";
+      }
+
+      if (e.key === "ArrowDown") {
+        e.preventDefault();
+        historyIndex = Math.max(historyIndex - 1, -1);
+        terminalInput.value = historyIndex >= 0 ? terminalHistory[historyIndex] : "";
+      }
+    });
+  };
+
+  // Code Editor
+  let aceEditor = null;
+  let codeCurrentPath = null;
+  const initializeCodeEditor = () => {
+    aceEditor = ace.edit("code-editor", {
+      theme: "ace/theme/tomorrow_night_blue",
+      mode: "ace/mode/javascript",
+      highlightActiveLine: true,
+      fontSize: 15,
+      showPrintMargin: false
+    });
+
+    document.getElementById("code-language").addEventListener("change", (e) => {
+      const mode = e.target.value;
+      aceEditor.session.setMode(`ace/mode/${mode}`);
+    });
+
+    document.getElementById("code-new").addEventListener("click", () => {
+      aceEditor.setValue("// Build something stellar\n", -1);
+      codeCurrentPath = null;
+      document.getElementById("code-status").textContent = "Untitled";
+    });
+
+    document.getElementById("code-open").addEventListener("click", () => {
+      openApp("files");
+      highlightFileManagerAction("Select a source file and click Open");
+    });
+
+    document.getElementById("code-save").addEventListener("click", () => {
+      const path = codeCurrentPath || prompt("Save code as (e.g., Projects/app.js)", "Projects/app.js");
+      if (!path) return;
+      addFile(path, aceEditor.getValue());
+      codeCurrentPath = path;
+      document.getElementById("code-status").textContent = path;
+      updateFileTree();
+    });
+
+    document.getElementById("code-run").addEventListener("click", async () => {
+      const code = aceEditor.getValue();
+      const mode = document.getElementById("code-language").value;
+      if (mode === "javascript") {
+        try {
+          const result = eval(code);
+          appendTerminalOutput("[JS] Executed: " + (result !== undefined ? result : "OK"));
+          openApp("terminal");
+        } catch (err) {
+          appendTerminalOutput("[JS Error] " + err.message);
+          openApp("terminal");
+        }
+      } else if (mode === "python") {
+        const pyodide = await pyodideReadyPromise;
+        if (!pyodide) {
+          appendTerminalOutput("[Python Error] Runtime not available yet");
+          openApp("terminal");
+          return;
+        }
+        try {
+          const res = await pyodide.runPythonAsync(code);
+          appendTerminalOutput("[Python] " + (res !== undefined ? res : "OK"));
+          openApp("terminal");
+        } catch (err) {
+          appendTerminalOutput("[Python Error] " + err);
+          openApp("terminal");
+        }
+      } else {
+        appendTerminalOutput(`[Preview] Saved snippet to ${mode.toUpperCase()} mode`);
+        addFile(`Projects/preview.${mode === "html" ? "html" : "css"}`, code);
+        updateFileTree();
+        openApp("terminal");
+  }
+  incrementStat("snippets");
+    });
+
+    document.getElementById("code-editor-window").addEventListener("window-resized", () => {
+      setTimeout(() => aceEditor.resize(), 50);
+    });
+  };
+
+  const loadCodeIntoEditor = (path) => {
+    const node = findNodeByPath(path);
+    if (!node || node.type !== "file") return;
+    aceEditor.setValue(node.content || "", -1);
+    codeCurrentPath = path;
+    document.getElementById("code-status").textContent = path;
+    const ext = path.split(".").pop();
+    const modes = { js: "javascript", py: "python", html: "html", css: "css" };
+    const mode = modes[ext] || "javascript";
+    document.getElementById("code-language").value = mode;
+    aceEditor.session.setMode(`ace/mode/${mode}`);
+    openApp("code");
+    
+    // Mystery game: Trigger clue #2 if demo.js is opened
+    if (path.includes('demo.js') && window.AuroraMystery) {
+      setTimeout(() => window.AuroraMystery.discoverClue('clue2'), 500);
+    }
+  };
+
+  // File Manager
+  const fileTree = document.getElementById("file-tree");
+  const fileDetails = document.getElementById("file-details");
+  const filePreview = document.getElementById("file-preview");
+  let selectedPath = "";
+  let filesLoaded = 0;
+
+  const openPath = (path, fromManager = false) => {
+    const normalized = resolvePath(path, fileSystem?.name || "Aurora");
+    const node = findNodeByPath(normalized);
+    if (!node) {
+      if (!fromManager) {
+        appendTerminalOutput?.(`[Aurora] Unable to locate ${path}`);
+      }
+      return false;
+    }
+    if (node.type === "folder") {
+      if (fromManager) {
+        const element = fileTree.querySelector(`[data-path="${normalized}"]`);
+        if (element) selectNode(normalized, element);
+      }
+      return true;
+    }
+    incrementStat("files");
+    if (/\.(txt|md)$/i.test(normalized)) {
+      loadTextIntoEditor(normalized);
+      return true;
+    }
+    if (/\.(js|py|html|css)$/i.test(normalized)) {
+      loadCodeIntoEditor(normalized);
+      return true;
+    }
+    if (/\.(png|jpe?g|gif)$/i.test(normalized) && typeof node.content === "string") {
+      const win = window.open(node.content, "_blank", "noopener");
+      if (!win) {
+        highlightFileManagerAction("Popup blocked. Preview embedded below.");
+        filePreview.innerHTML = `<img src="${node.content}" alt="${node.name}" style="max-width:100%; border-radius:12px;" />`;
+      }
+      return true;
+    }
+    loadTextIntoEditor(normalized);
+    return true;
+  };
+
+  const initializeFileSystem = () => {
+    const stored = loadFileSystemFromStorage();
+    fileSystem = stored || defaultFileSystem();
+    terminalCwd = fileSystem.name;
+    if (!stored) persistFileSystem();
+  };
+
+  const updateFileTree = () => {
+    fileTree.innerHTML = "";
+    const buildTree = (node, path = "") => {
+      const itemPath = path ? `${path}/${node.name}` : node.name;
+      if (node.type === "folder") {
+        const folderEl = document.createElement("div");
+        folderEl.className = "tree-node folder";
+        folderEl.textContent = `📁 ${node.name}`;
+        folderEl.dataset.path = itemPath;
+        folderEl.addEventListener("click", () => selectNode(itemPath, folderEl));
+        folderEl.addEventListener("dblclick", () => openPath(itemPath, true));
+        fileTree.appendChild(folderEl);
+        if (node.children && node.children.length) {
+          const childContainer = document.createElement("div");
+          childContainer.className = "tree-children";
+          node.children.forEach((child) => {
+            childContainer.appendChild(buildTreeNode(child, itemPath));
+          });
+          fileTree.appendChild(childContainer);
+        }
+      }
+    };
+
+    const buildTreeNode = (node, parentPath) => {
+      const itemPath = `${parentPath}/${node.name}`;
+      const nodeEl = document.createElement("div");
+      nodeEl.className = "tree-node";
+      nodeEl.dataset.path = itemPath;
+      if (node.type === "folder") {
+        nodeEl.classList.add("folder");
+        nodeEl.textContent = `📁 ${node.name}`;
+      } else {
+        const icon = node.name.match(/\.(png|jpg|jpeg|gif)$/i) ? "🖼️" : node.name.match(/\.(js|py|html|css)$/i) ? "🧠" : "📄";
+        nodeEl.textContent = `${icon} ${node.name}`;
+      }
+      nodeEl.addEventListener("click", () => selectNode(itemPath, nodeEl));
+      nodeEl.addEventListener("dblclick", () => openPath(itemPath, true));
+      if (node.type === "folder" && node.children && node.children.length) {
+        const childContainer = document.createElement("div");
+        childContainer.className = "tree-children";
+        node.children.forEach((child) => {
+          childContainer.appendChild(buildTreeNode(child, itemPath));
+        });
+        const wrapper = document.createElement("div");
+        wrapper.appendChild(nodeEl);
+        wrapper.appendChild(childContainer);
+        return wrapper;
+      }
+      return nodeEl;
+    };
+
+    buildTree(fileSystem, "");
+    if (!selectedPath && fileSystem) {
+      const rootElement = fileTree.querySelector(`[data-path="${fileSystem.name}"]`);
+      if (rootElement) {
+        selectNode(fileSystem.name, rootElement);
+      }
+    }
+  };
+
+  const selectNode = (path, element) => {
+    document.querySelectorAll(".tree-node").forEach((node) => node.classList.remove("active"));
+    if (element) element.classList.add("active");
+    const normalized = resolvePath(path, fileSystem?.name || "Aurora");
+    selectedPath = normalized;
+    showDetails(normalized);
+  };
+
+  const showDetails = (path) => {
+    const node = findNodeByPath(path);
+    if (!node) return;
+    const created = node.created ? new Date(node.created).toLocaleString() : "Unknown";
+    const updated = node.updated ? new Date(node.updated).toLocaleString() : created;
+    fileDetails.innerHTML = `<h3>${node.name}</h3><p>Type: ${node.type}</p><p>Created: ${created}</p><p>Updated: ${updated}</p>`;
+    if (node.type === "file") {
+      const contentPreview = typeof node.content === "string" ? node.content : "[Binary content]";
+      filePreview.textContent = contentPreview.slice(0, 1200);
+    } else {
+      filePreview.textContent = node.children ? `${node.children.length} item(s)` : "Empty";
+    }
+  };
+
+  const highlightFileManagerAction = (message) => {
+    fileDetails.innerHTML = `<h3>Action Required</h3><p>${message}</p>`;
+  };
+
+  const initializeFileManager = () => {
+    updateFileTree();
+
+    document.getElementById("create-file").addEventListener("click", () => {
+      const nameInput = prompt("New file name", "NewFile.txt");
+      if (!nameInput) return;
+      const name = nameInput.trim();
+      if (!name) return;
+      const targetBase = resolvePath(selectedPath || (fileSystem?.name || "Aurora"), fileSystem?.name || "Aurora");
+      const targetNode = findNodeByPath(targetBase);
+      const parentPath = targetNode && targetNode.type === "folder"
+        ? targetBase
+        : targetBase.split("/").slice(0, -1).join("/");
+      const normalizedParent = resolvePath(parentPath || (fileSystem?.name || "Aurora"), fileSystem?.name || "Aurora");
+      addFile(`${normalizedParent}/${name}`, "");
+      updateFileTree();
+    });
+
+    document.getElementById("create-folder").addEventListener("click", () => {
+      const nameInput = prompt("Folder name", "NewFolder");
+      if (!nameInput) return;
+      const name = nameInput.trim();
+      if (!name) return;
+      const targetPath = resolvePath(selectedPath || (fileSystem?.name || "Aurora"), fileSystem?.name || "Aurora");
+      const targetNode = findNodeByPath(targetPath);
+      const parentNode = (targetNode && targetNode.type === "folder")
+        ? targetNode
+        : findNodeByPath(targetPath.split("/").slice(0, -1).join("/")) || fileSystem;
+      const created = ensureFolder(parentNode, name);
+      if (!created) return;
+      persistFileSystem();
+      updateFileTree();
+    });
+
+    document.getElementById("rename-item").addEventListener("click", () => {
+      if (!selectedPath) return;
+      const node = findNodeByPath(selectedPath);
+      if (!node) return;
+      const newNameInput = prompt("Rename to", node.name);
+      if (!newNameInput) return;
+      const newName = newNameInput.trim();
+      if (!newName || newName === node.name) return;
+      const success = renameNode(selectedPath, newName);
+      if (!success) {
+        alert("Unable to rename. Another item may already use that name.");
+        return;
+      }
+      const base = selectedPath.split("/").slice(0, -1).join("/");
+      selectedPath = resolvePath(base ? `${base}/${newName}` : newName, fileSystem?.name || "Aurora");
+      updateFileTree();
+    });
+
+    document.getElementById("delete-item").addEventListener("click", () => {
+      if (!selectedPath) return;
+      const normalized = resolvePath(selectedPath, fileSystem?.name || "Aurora");
+      if (normalized === (fileSystem?.name || "Aurora")) {
+        alert("Cannot delete the root of the virtual drive.");
+        return;
+      }
+      if (!confirm(`Delete ${normalized}?`)) return;
+      const removed = removeNode(normalized);
+      if (!removed) {
+        alert("Deletion failed. Item may have already been removed.");
+        return;
+      }
+      selectedPath = "";
+      updateFileTree();
+      fileDetails.innerHTML = `<h3>Virtual Drive</h3><p>Select another item to continue.</p>`;
+      filePreview.textContent = "";
+    });
+
+    document.getElementById("open-item").addEventListener("click", () => {
+      if (!selectedPath) return;
+      openPath(selectedPath, true);
+    });
+  };
+
+  // Paint
+  const paintCanvas = document.getElementById("paint-canvas");
+  const paintCtx = paintCanvas.getContext("2d");
+  let painting = false;
+  let brushColor = "#33a1ff";
+  let brushSize = 6;
+  let paintStrokes = 0;
+
+  const initializePaint = () => {
+    const colors = ["#33a1ff", "#4be0c3", "#ffd366", "#ff6f91", "#c977ff", "#ffffff", "#000000"];
+    const colorContainer = document.getElementById("paint-colors");
+    colors.forEach((color) => {
+      const swatch = document.createElement("div");
+      swatch.className = "paint-color";
+      swatch.style.background = color;
+      swatch.addEventListener("click", () => {
+        brushColor = color;
+      });
+      colorContainer.appendChild(swatch);
+    });
+
+    paintCanvas.addEventListener("mousedown", (e) => {
+      painting = true;
+      paintCtx.beginPath();
+      paintCtx.moveTo(e.offsetX, e.offsetY);
+      draw(e.offsetX, e.offsetY);
+    });
+
+    paintCanvas.addEventListener("mousemove", (e) => {
+      if (!painting) return;
+      draw(e.offsetX, e.offsetY);
+    });
+
+    document.addEventListener("mouseup", () => {
+      if (painting) {
+        painting = false;
+        paintCtx.closePath();
+        incrementStat("strokes");
+      }
+    });
+
+    document.getElementById("paint-size").addEventListener("input", (e) => {
+      brushSize = Number(e.target.value);
+    });
+
+    document.getElementById("paint-erase").addEventListener("click", () => {
+      brushColor = "#111a2a";
+    });
+
+    document.getElementById("paint-clear").addEventListener("click", () => {
+      paintCtx.fillStyle = "#111a2a";
+      paintCtx.fillRect(0, 0, paintCanvas.width, paintCanvas.height);
+    });
+
+    document.getElementById("paint-save").addEventListener("click", () => {
+      const dataUrl = paintCanvas.toDataURL("image/png");
+      const path = prompt("Save painting as", `Media/painting-${Date.now()}.png`);
+      if (!path) return;
+      addFile(path, dataUrl);
+      updateFileTree();
+    });
+
+    paintCtx.fillStyle = "#111a2a";
+    paintCtx.fillRect(0, 0, paintCanvas.width, paintCanvas.height);
+  };
+
+  const draw = (x, y) => {
+    paintCtx.lineWidth = brushSize;
+    paintCtx.lineCap = "round";
+    paintCtx.strokeStyle = brushColor;
+    paintCtx.lineTo(x, y);
+    paintCtx.stroke();
+    paintCtx.beginPath();
+    paintCtx.moveTo(x, y);
+  };
+
+  // Game
+  const gameCanvas = document.getElementById("game-canvas");
+  const gameCtx = gameCanvas.getContext("2d");
+  const gameOverlay = document.getElementById("game-overlay");
+  const gameStart = document.getElementById("game-start");
+  let gameRunning = false;
+  let gameScore = 0;
+  let gameSpeed = 3;
+  let player = null;
+  let meteors = [];
+
+  const initializeGame = () => {
+    resetGame();
+    renderGame();
+    window.addEventListener("keydown", (e) => {
+      if (!gameRunning) return;
+      if (e.key === "ArrowLeft") player.targetX -= 60;
+      if (e.key === "ArrowRight") player.targetX += 60;
+      if (e.key === " ") {
+        player.size = 26;
+        setTimeout(() => (player.size = 18), 180);
+      }
+    });
+
+    gameStart.addEventListener("click", () => {
+      gameOverlay.style.display = "none";
+      gameRunning = true;
+      gameScore = 0;
+      gameSpeed = 3;
+      player.x = gameCanvas.width / 2;
+      player.targetX = player.x;
+      meteors = [];
+      loopGame();
+    });
+  };
+
+  const resetGame = () => {
+    player = { x: gameCanvas.width / 2, y: gameCanvas.height - 60, size: 18, targetX: gameCanvas.width / 2 };
+    meteors = [];
+  };
+
+  const spawnMeteor = () => {
+    meteors.push({ x: Math.random() * gameCanvas.width, y: -20, size: 16 + Math.random() * 28, speed: gameSpeed + Math.random() * 2 });
+  };
+
+  const loopGame = () => {
+    if (!gameRunning) return;
+    updateGame();
+    renderGame();
+    requestAnimationFrame(loopGame);
+  };
+
+  let lastSpawn = 0;
+  const updateGame = () => {
+    player.x += (player.targetX - player.x) * 0.12;
+    player.x = Math.max(20, Math.min(gameCanvas.width - 20, player.x));
+
+    const now = Date.now();
+    if (now - lastSpawn > 600) {
+      spawnMeteor();
+      lastSpawn = now;
+    }
+
+    meteors.forEach((m) => {
+      m.y += m.speed;
+      if (m.y > gameCanvas.height + 40) {
+        meteors.splice(meteors.indexOf(m), 1);
+        gameScore += 10;
+        if (gameScore % 120 === 0) {
+          gameSpeed += 0.5;
+        }
+      }
+      const dx = m.x - player.x;
+      const dy = m.y - player.y;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+      if (distance < m.size + player.size - 4) {
+        gameRunning = false;
+        gameOverlay.innerHTML = `<h2>Crashed!</h2><p>Score: ${gameScore}</p><button id="game-restart" style="margin-top:12px; padding:8px 18px; border-radius:10px; border:none; background:rgba(51,161,255,0.6); color:#fff; cursor:pointer;">Try Again</button>`;
+        gameOverlay.style.display = "block";
+        document.getElementById("game-restart").addEventListener("click", () => {
+          gameOverlay.style.display = "none";
+          resetGame();
+          renderGame();
+          gameScore = 0;
+          gameSpeed = 3;
+          gameRunning = true;
+          loopGame();
+        });
+      }
+    });
+  };
+
+  const renderGame = () => {
+    gameCtx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
+    const gradient = gameCtx.createLinearGradient(0, 0, 0, gameCanvas.height);
+    gradient.addColorStop(0, "rgba(10, 20, 60, 0.9)");
+    gradient.addColorStop(1, "rgba(2, 6, 15, 0.95)");
+    gameCtx.fillStyle = gradient;
+    gameCtx.fillRect(0, 0, gameCanvas.width, gameCanvas.height);
+
+    meteors.forEach((m) => {
+      gameCtx.beginPath();
+      gameCtx.fillStyle = "#ff9f43";
+      gameCtx.arc(m.x, m.y, m.size, 0, Math.PI * 2);
+      gameCtx.fill();
+      gameCtx.fillStyle = "#ffd166";
+      gameCtx.beginPath();
+      gameCtx.arc(m.x - 4, m.y - 4, m.size * 0.6, 0, Math.PI * 2);
+      gameCtx.fill();
+    });
+
+    gameCtx.beginPath();
+    gameCtx.fillStyle = "#64d8ff";
+    gameCtx.arc(player.x, player.y, player.size, 0, Math.PI * 2);
+    gameCtx.fill();
+
+    gameCtx.fillStyle = "#ffffff";
+    gameCtx.font = "16px Roboto";
+    gameCtx.fillText(`Score: ${gameScore}`, 18, 28);
+  };
+
+  // System Stats
+  const memoryMeter = document.getElementById("mem-meter");
+  const cpuMeter = document.getElementById("cpu-meter");
+  const diskMeter = document.getElementById("disk-meter");
+
+  function syncFileSystemToPyodide(pyodide) {
+    if (!pyodide || !fileSystem) return;
+    const FS = pyodide.FS;
+    const rootName = fileSystem.name || "Aurora";
+    const rootPath = `/${rootName}`;
+
+    const ensureDir = (dirPath) => {
+      if (!dirPath) return;
+      const segments = dirPath.split("/").filter(Boolean);
+      let current = "";
+      segments.forEach((segment) => {
+        current += `/${segment}`;
+        try {
+          if (!FS.analyzePath(current).exists) {
+            FS.mkdir(current);
+          }
+        } catch (err) {
+          try {
+            FS.mkdir(current);
+          } catch (mkdirErr) {
+            console.warn("Pyodide mkdir failed", current, mkdirErr);
+          }
+        }
+      });
+    };
+
+    const decodeDataUrl = (dataUrl) => {
+      const match = /^data:(.*?);base64,(.*)$/i.exec(dataUrl);
+      if (!match) return null;
+      const binary = atob(match[2]);
+      const length = binary.length;
+      const bytes = new Uint8Array(length);
+      for (let i = 0; i < length; i += 1) {
+        bytes[i] = binary.charCodeAt(i);
+      }
+      return bytes;
+    };
+
+    const newPaths = new Set();
+    ensureDir(rootPath);
+    newPaths.add(rootPath);
+
+    const writeFile = (filePath, content) => {
+      if (typeof content === "string" && content.startsWith("data:")) {
+        const data = decodeDataUrl(content);
+        if (data) {
+          FS.writeFile(filePath, data);
+          return;
+        }
+      }
+      FS.writeFile(filePath, typeof content === "string" ? content : String(content ?? ""));
+    };
+
+    const traverse = (node, parentPath = "") => {
+      const nodePath = parentPath ? `${parentPath}/${node.name}` : `/${node.name}`;
+      if (node.type === "folder") {
+        ensureDir(nodePath);
+        newPaths.add(nodePath);
+        (node.children || []).forEach((child) => traverse(child, nodePath));
+      } else if (node.type === "file") {
+        ensureDir(parentPath || rootPath);
+        try {
+          writeFile(nodePath, node.content || "");
+        } catch (err) {
+          console.warn("Failed to sync file to Pyodide", nodePath, err);
+        }
+        newPaths.add(nodePath);
+      }
+    };
+
+    traverse(fileSystem, "");
+
+    const removals = Array.from(lastSyncedPaths).filter((path) => !newPaths.has(path) && path !== rootPath);
+    removals.sort((a, b) => b.length - a.length);
+    removals.forEach((path) => {
+      try {
+        const info = FS.analyzePath(path);
+        if (!info.exists) return;
+        if (FS.isDir(info.object.mode)) {
+          FS.rmdir(path);
+        } else {
+          FS.unlink(path);
+        }
+      } catch (err) {
+        // stale handles can be ignored
+      }
+    });
+
+    lastSyncedPaths = newPaths;
+  }
+
+  const animateMeters = () => {
+    const tween = () => {
+      memoryMeter.style.width = (40 + Math.random() * 40) + "%";
+      cpuMeter.style.width = (30 + Math.random() * 50) + "%";
+      diskMeter.style.width = (20 + Math.random() * 60) + "%";
+      setTimeout(tween, 2400);
+    };
+    tween();
+  };
+
+  const incrementStat = (key) => {
+    if (key === "files") {
+      filesLoaded += 1;
+    } else if (key === "snippets") {
+      snippetCount += 1;
+    } else if (key === "strokes") {
+      paintStrokes += 1;
+    }
+    updateStats();
+  };
+
+  // Expose to global scope
+  window.incrementStat = incrementStat;
+  Object.defineProperty(window, 'paintStrokes', {
+    get: () => paintStrokes
+  });
+
+  const updateStats = () => {
+    document.getElementById("stat-files").textContent = `Files loaded: ${filesLoaded}`;
+    document.getElementById("stat-snippets").textContent = `Snippets executed: ${snippetCount}`;
+    document.getElementById("stat-strokes").textContent = `Paint strokes: ${paintStrokes}`;
+  };
+
+})();
+</script>
+</body>
+</html>

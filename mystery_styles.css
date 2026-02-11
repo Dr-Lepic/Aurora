@@ -1,0 +1,571 @@
+/* Aurora Mystery Game Styles */
+
+/* Locked folder animation */
+.locked-folder {
+  position: relative;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.locked-folder::after {
+  content: '🔐';
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  font-size: 16px;
+  animation: float 3s ease-in-out infinite;
+}
+
+.unlocked-folder {
+  animation: unlock-bounce 0.6s ease;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-5px); }
+}
+
+@keyframes unlock-bounce {
+  0% { transform: scale(1); }
+  25% { transform: scale(1.2) rotate(10deg); }
+  50% { transform: scale(0.9) rotate(-10deg); }
+  75% { transform: scale(1.1) rotate(5deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+/* Modal styles */
+.mystery-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  animation: fadeIn 0.3s ease;
+}
+
+.mystery-modal-content {
+  background: linear-gradient(135deg, rgba(8, 28, 60, 0.95), rgba(4, 15, 40, 0.95));
+  border-radius: 20px;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(51, 161, 255, 0.3);
+  max-width: 600px;
+  width: 90%;
+  max-height: 80vh;
+  overflow: hidden;
+  animation: slideUp 0.4s ease;
+}
+
+.mystery-modal-header {
+  background: linear-gradient(135deg, rgba(22, 154, 255, 0.3), rgba(12, 80, 255, 0.3));
+  padding: 18px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #e7f3ff;
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.mystery-modal-close {
+  background: transparent;
+  border: none;
+  color: #e7f3ff;
+  font-size: 28px;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.mystery-modal-close:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: rotate(90deg);
+}
+
+.mystery-modal-body {
+  padding: 24px;
+  color: #dff1ff;
+  overflow-y: auto;
+  max-height: calc(80vh - 100px);
+}
+
+.mystery-modal-body p {
+  margin: 12px 0;
+  line-height: 1.6;
+}
+
+.mystery-hint {
+  font-size: 14px;
+  color: #4be0c3;
+  margin: 8px 0;
+}
+
+#password-input {
+  width: 100%;
+  padding: 14px 18px;
+  margin: 16px 0;
+  background: rgba(0, 7, 16, 0.6);
+  border: 2px solid rgba(51, 161, 255, 0.3);
+  border-radius: 12px;
+  color: #f1f8ff;
+  font-size: 16px;
+  font-family: 'Roboto', Arial, sans-serif;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+}
+
+#password-input:focus {
+  outline: none;
+  border-color: #33a1ff;
+  box-shadow: 0 0 0 4px rgba(51, 161, 255, 0.2);
+}
+
+.mystery-button-group {
+  display: flex;
+  gap: 12px;
+  margin: 16px 0;
+}
+
+.mystery-button {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex: 1;
+  background: rgba(255, 255, 255, 0.1);
+  color: #e7f3ff;
+}
+
+.mystery-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+.mystery-button.primary {
+  background: linear-gradient(135deg, #33a1ff, #0d72d6);
+  color: #fff;
+}
+
+.mystery-button.primary:hover {
+  background: linear-gradient(135deg, #5db5ff, #1a85e6);
+}
+
+.mystery-button.secondary {
+  background: linear-gradient(135deg, rgba(75, 224, 195, 0.3), rgba(45, 170, 150, 0.3));
+  color: #4be0c3;
+}
+
+.mystery-button.secondary:hover {
+  background: linear-gradient(135deg, rgba(75, 224, 195, 0.5), rgba(45, 170, 150, 0.5));
+}
+
+.mystery-button.small {
+  padding: 6px 12px;
+  font-size: 12px;
+}
+
+.mystery-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+#password-feedback {
+  margin-top: 16px;
+  padding: 14px;
+  border-radius: 10px;
+  font-size: 14px;
+  animation: slideIn 0.3s ease;
+}
+
+.mystery-feedback.success {
+  background: rgba(75, 224, 195, 0.2);
+  border: 1px solid #4be0c3;
+  color: #4be0c3;
+}
+
+.mystery-feedback.error {
+  background: rgba(255, 111, 145, 0.2);
+  border: 1px solid #ff6f91;
+  color: #ff9fb5;
+}
+
+.mystery-hint-text {
+  margin: 8px 0;
+  padding: 8px 12px;
+  background: rgba(255, 211, 102, 0.15);
+  border-left: 3px solid #ffd366;
+  border-radius: 6px;
+  font-size: 13px;
+}
+
+/* Clue Journal */
+.clue-journal h3 {
+  color: #33a1ff;
+  margin: 16px 0 12px 0;
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.clue-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.clue-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.clue-card.discovered {
+  border-color: rgba(75, 224, 195, 0.4);
+  background: rgba(75, 224, 195, 0.08);
+}
+
+.clue-card.locked {
+  border-color: rgba(255, 255, 255, 0.05);
+  opacity: 0.7;
+}
+
+.clue-name {
+  font-weight: 500;
+  color: #e7f3ff;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.clue-content {
+  font-size: 13px;
+  color: #4be0c3;
+  line-height: 1.5;
+  padding: 8px 12px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  font-family: 'Fira Code', Consolas, monospace;
+}
+
+.clue-hint {
+  margin-top: 10px;
+  font-size: 12px;
+  color: #ffd366;
+  padding: 8px;
+  background: rgba(255, 211, 102, 0.1);
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.clue-hint.hidden {
+  display: none;
+}
+
+/* Cipher Helper */
+.cipher-helper {
+  margin-top: 24px;
+  padding: 18px;
+  background: rgba(51, 161, 255, 0.1);
+  border-radius: 12px;
+  border: 1px solid rgba(51, 161, 255, 0.3);
+}
+
+.cipher-helper h3 {
+  color: #33a1ff;
+  margin-top: 0;
+}
+
+.cipher-helper input[type="text"] {
+  width: 100%;
+  padding: 10px 14px;
+  margin: 8px 0;
+  background: rgba(0, 7, 16, 0.6);
+  border: 1px solid rgba(51, 161, 255, 0.3);
+  border-radius: 8px;
+  color: #f1f8ff;
+  font-family: 'Fira Code', Consolas, monospace;
+}
+
+.cipher-helper input[type="number"] {
+  padding: 10px 14px;
+  margin: 8px 8px 8px 0;
+  background: rgba(0, 7, 16, 0.6);
+  border: 1px solid rgba(51, 161, 255, 0.3);
+  border-radius: 8px;
+  color: #f1f8ff;
+}
+
+.cipher-result {
+  margin-top: 12px;
+  padding: 12px;
+  background: rgba(75, 224, 195, 0.15);
+  border-radius: 8px;
+  color: #4be0c3;
+  font-family: 'Fira Code', Consolas, monospace;
+  font-size: 16px;
+  letter-spacing: 2px;
+}
+
+/* Victory Screen */
+.victory-modal .mystery-modal-content {
+  max-width: 700px;
+  background: linear-gradient(135deg, rgba(51, 161, 255, 0.95), rgba(75, 224, 195, 0.95));
+}
+
+.victory-header {
+  font-size: 32px;
+  text-align: center;
+  padding: 24px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: -24px -24px 24px -24px;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.victory-body {
+  text-align: center;
+  color: #0a1a30;
+}
+
+.victory-body h2 {
+  font-size: 28px;
+  margin: 0 0 16px 0;
+  color: #0a1a30;
+}
+
+.victory-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin: 24px 0;
+}
+
+.stat-item {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 16px;
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+}
+
+.stat-value {
+  font-size: 32px;
+  font-weight: 700;
+  color: #0a1a30;
+  margin-bottom: 4px;
+}
+
+.stat-label {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: rgba(10, 26, 48, 0.8);
+  font-weight: 500;
+}
+
+.victory-message {
+  margin: 24px 0;
+  font-size: 16px;
+  line-height: 1.8;
+  color: rgba(10, 26, 48, 0.9);
+}
+
+.victory-close {
+  margin-top: 16px;
+}
+
+/* Notification popup */
+.mystery-notification {
+  position: fixed;
+  top: 80px;
+  right: 24px;
+  width: 340px;
+  background: linear-gradient(135deg, rgba(8, 28, 60, 0.95), rgba(4, 15, 40, 0.95));
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(75, 224, 195, 0.5);
+  z-index: 9999;
+  animation: slideIn 0.5s ease;
+}
+
+.mystery-notification-header {
+  font-size: 14px;
+  color: #4be0c3;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.mystery-notification-title {
+  font-size: 18px;
+  color: #e7f3ff;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.mystery-notification-content {
+  font-size: 14px;
+  color: #dff1ff;
+  line-height: 1.6;
+  margin-bottom: 12px;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  font-family: 'Fira Code', Consolas, monospace;
+}
+
+.mystery-notification-footer {
+  font-size: 12px;
+  color: #ffd366;
+  text-align: right;
+}
+
+/* Game menu button */
+.mystery-menu {
+  position: fixed;
+  bottom: 80px;
+  right: 24px;
+  z-index: 900;
+}
+
+.mystery-menu-button {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ff6f91, #c977ff);
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(201, 119, 255, 0.4);
+  transition: all 0.3s ease;
+  animation: pulse 3s ease-in-out infinite;
+}
+
+.mystery-menu-button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 12px 32px rgba(201, 119, 255, 0.6);
+}
+
+/* Confetti animation */
+.confetti {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  background: #33a1ff;
+  top: -10px;
+  z-index: 10001;
+  animation: confetti-fall linear forwards;
+}
+
+@keyframes confetti-fall {
+  to {
+    transform: translateY(100vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(40px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(400px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOut {
+  to {
+    transform: translateX(400px);
+    opacity: 0;
+  }
+}
+
+/* Scrollbar styling for modals */
+.mystery-modal-body::-webkit-scrollbar {
+  width: 8px;
+}
+
+.mystery-modal-body::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+}
+
+.mystery-modal-body::-webkit-scrollbar-thumb {
+  background: rgba(51, 161, 255, 0.5);
+  border-radius: 10px;
+}
+
+.mystery-modal-body::-webkit-scrollbar-thumb:hover {
+  background: rgba(51, 161, 255, 0.7);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .mystery-modal-content {
+    width: 95%;
+    max-height: 90vh;
+  }
+  
+  .mystery-notification {
+    width: calc(100% - 48px);
+    right: 24px;
+  }
+  
+  .victory-stats {
+    grid-template-columns: 1fr;
+  }
+  
+  .mystery-menu {
+    bottom: 70px;
+    right: 16px;
+  }
+  
+  .mystery-menu-button {
+    width: 48px;
+    height: 48px;
+    font-size: 20px;
+  }
+}
