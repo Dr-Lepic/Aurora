@@ -104,11 +104,11 @@
     update() {
       if (!this.gameRunning) return;
 
-      if (Phaser.Input.Keyboard.JustDown(this.cursors.left)) {
-        this.playerTargetX = Math.max(20, this.playerTargetX - 60);
+      if (this.cursors.left.isDown) {
+        this.playerTargetX = Math.max(20, this.playerTargetX - 8);
       }
-      if (Phaser.Input.Keyboard.JustDown(this.cursors.right)) {
-        this.playerTargetX = Math.min(620, this.playerTargetX + 60);
+      if (this.cursors.right.isDown) {
+        this.playerTargetX = Math.min(620, this.playerTargetX + 8);
       }
 
       this.player.x += (this.playerTargetX - this.player.x) * 0.12;
@@ -126,16 +126,22 @@
           const tier = Math.floor(this.gameScore / 120);
           if (tier > this.lastScoreTier) {
             this.lastScoreTier = tier;
-            this.gameSpeed += 0.5;
+            this.gameSpeed = Math.min(12, this.gameSpeed + 0.5);
           }
           continue;
         }
 
-        const playerRadius = 18 * this.player.scaleX;
+        const playerRadius = 18; // Ignore scale penalty
         const distance = Phaser.Math.Distance.Between(meteor.x, meteor.y, this.player.x, this.player.y);
         if (distance < meteor.getData("size") + playerRadius - 4) {
-          this.endGame();
-          return;
+          if (this.player.scaleX > 1) {
+            meteor.destroy();
+            this.meteors.splice(i, 1);
+            continue;
+          } else {
+            this.endGame();
+            return;
+          }
         }
       }
     }
